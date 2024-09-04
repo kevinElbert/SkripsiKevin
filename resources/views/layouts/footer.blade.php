@@ -32,13 +32,30 @@
 
         <!-- Contact Us -->
         <div class="text-right">
-            <h4 class="text-lg font-bold text-white">Contact Us</h4>
-            <div class="flex justify-end mt-2 space-x-4">
-                <a href="#" class="text-purple-300 hover:text-white"><img src="path_to_instagram_icon" alt="Instagram" class="w-5 h-5"></a>
-                <a href="#" class="text-purple-300 hover:text-white"><img src="path_to_email_icon" alt="Email" class="w-5 h-5"></a>
-                <a href="#" class="text-purple-300 hover:text-white"><img src="path_to_whatsapp_icon" alt="WhatsApp" class="w-5 h-5"></a>
-                <a href="#" class="text-purple-300 hover:text-white"><img src="path_to_twitter_icon" alt="Twitter" class="w-5 h-5"></a>
-                <a href="#" class="text-purple-300 hover:text-white"><img src="path_to_youtube_icon" alt="YouTube" class="w-5 h-5"></a>
+            <h4 class="text-2xl font-bold text-white">Contact Us</h4>
+            <div class="flex flex-col items-end mt-2 space-y-2">
+                <div class="flex space-x-4">
+                    <a href="#" class="text-purple-300 hover:text-white">
+                        <img src="{{ asset('build/assets/instagram.png') }}" alt="Instagram" class="w-5 h-5">
+                    </a>
+                    <a href="#" class="text-purple-300 hover:text-white">
+                        <img src="{{ asset('build/assets/gmail.png') }}" alt="Email" class="w-5 h-5">
+                    </a>
+                    <a href="#" class="text-purple-300 hover:text-white">
+                        <img src="{{ asset('build/assets/logo.png') }}" alt="WhatsApp" class="w-5 h-5">
+                    </a>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-purple-300 hover:text-white">
+                        <img src="{{ asset('build/assets/twitter.png') }}" alt="Twitter" class="w-5 h-5">
+                    </a>
+                    <a href="#" class="text-purple-300 hover:text-white">
+                        <img src="{{ asset('build/assets/youtube.png') }}" alt="YouTube" class="w-5 h-5">
+                    </a>
+                    <a href="#" class="text-purple-300 hover:text-white">
+                        <img src="{{ asset('build/assets/facebook.png') }}" alt="FaceBook" class="w-5 h-5">
+                    </a>
+                </div>
             </div>
         </div>
     </div>
