@@ -13,7 +13,7 @@
         <div class="flex justify-between items-center text-purple-300">
             <!-- Logo and Name -->
             <div class="flex items-center">
-                <h3 class="text-white text-lg font-bold">DisabilityLearn</h3>
+                <h3 class="text-white text-3xl font-bold">DisabilityLearn</h3>
             </div>
     
             <!-- Navigation Links -->
