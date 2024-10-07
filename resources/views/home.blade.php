@@ -11,7 +11,7 @@
     <!-- Text Section -->
     <div class="md:w-1/2 md:order-1 order-2">
         <h2 class="text-3xl font-bold text-gray-800">Let’s learn together!</h2>
-        <p class="text-gray-600 my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p class="text-gray-600 my-4">Kami percaya bahwa setiap orang, apapun kondisi dan kebutuhannya, memiliki hak yang sama untuk belajar dan berkembang. Temukan kursus yang disesuaikan untuk Anda, dengan konten yang ramah dan mudah diakses, sehingga Anda dapat mencapai potensi terbaik Anda.</p>
     </div>
 
     <!-- Image Section -->
