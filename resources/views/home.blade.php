@@ -25,10 +25,10 @@
         <input type="text" placeholder="What do you want to learn?" class="w-full max-w-xl border border-gray-300 rounded-md p-2">
         <p class="text-gray-600 my-2">Pilih filter kursus sesuai dengan kebutuhan kondisi Anda!</p>
         <div class="space-x-2 my-4">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Deaf</button>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Visually Impaired</button>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Intellectual</button>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Others</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Deaf</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Visually Impaired</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Intellectual</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Others</button>
         </div>
     </section>
 

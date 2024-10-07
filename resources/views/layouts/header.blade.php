@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Header</title>
     @vite('resources/css/app.css')
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 </head>
 <body>
     <header class="bg-gray-800 p-4">
@@ -18,21 +20,22 @@
     
             <!-- Navigation Links -->
             <nav class="flex items-center space-x-4">
-                <a href="/mylearning" class="flex items-center text-purple-300 hover:text-white">
-                    MyLearning <img src="path_to_mylearning_icon" alt="MyLearning" class="ml-1 w-4 h-4">
+                <a href="/mylearning" class="flex items-center text-white hover:text-purple-300">
+                    MyLearning <i class="fas fa-graduation-cap ml-2"></i>
                 </a>
+                
                 <a href="/" class="flex items-center text-white hover:text-purple-300">
-                    Home <img src="path_to_home_icon" alt="Home" class="ml-1 w-4 h-4">
+                    Home <i class="fas fa-house-chimney ml-2"></i>
                 </a>
                 <a href="/about" class="flex items-center text-white hover:text-purple-300">
-                    About us <img src="path_to_about_icon" alt="About us" class="ml-1 w-4 h-4">
+                    About us <i class="fa-solid fa-info ml-2"></i>
                 </a>
             </nav>
     
             <!-- User Profile -->
             <div class="flex items-center">
-                <span class="mr-2 text-purple-300">Hi, user01</span>
-                <img src="path_to_user_icon" alt="User Profile" class="w-6 h-6">
+                <span class="mr-2 text-white">Hi, user01</span>
+                <i class="fas fa-user text-white"></i>
             </div>
         </div>
     </header>
