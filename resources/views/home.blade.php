@@ -16,7 +16,7 @@
 
     <!-- Image Section -->
     <div class="md:w-1/2 md:order-2 order-1 flex justify-end">
-        <img src="{{ asset('build/assets/disabilitasbelajar.jpg') }}" alt="Learning Image" class="w-full md:w-auto md:ml-auto">
+        <img src="{{ asset('build/assets/pelajardisabilitas.jpg') }}" alt="Learning Image" class="w-full md:w-auto md:ml-auto">
     </div>
 </section>
 

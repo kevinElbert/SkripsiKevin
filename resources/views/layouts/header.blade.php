@@ -7,8 +7,6 @@
     <title>Header</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
 </head>
 <body>
     <header class="bg-gray-800 p-4">
@@ -32,10 +30,27 @@
                 </a>
             </nav>
     
-            <!-- User Profile -->
-            <div class="flex items-center">
-                <span class="mr-2 text-white">Hi, user01</span>
-                <i class="fas fa-user text-white"></i>
+            <!-- User Profile or Login/Register -->
+            <div class="flex items-center space-x-4">
+                <!-- Jika user belum login, tampilkan Login/Register -->
+                @guest
+                    <a href="{{ route('login') }}" class="text-white hover:text-purple-300">Login</a>
+                    <a href="{{ route('register') }}" class="text-white hover:text-purple-300">Register</a>
+                @endguest
+
+                <!-- Jika user sudah login, tampilkan nama user dan icon profil -->
+                @auth
+                    <span class="mr-2 text-white">Hi, {{ Auth::user()->name }}</span>
+                    <a href="{{ route('profile.edit') }}">
+                        <i class="fas fa-user text-white"></i>
+                    </a>
+
+                    <!-- Logout -->
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-white hover:text-purple-300">Logout</button>
+                    </form>
+                @endauth
             </div>
         </div>
     </header>
