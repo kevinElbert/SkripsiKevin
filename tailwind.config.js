@@ -15,6 +15,15 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 nunito: ['Nunito', 'sans-serif'],
             },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: 0 },
+                    '100%': { opacity: 1 },
+                },
+            },
+            animation: {
+                'fade-in': 'fadeIn 1s ease-in-out forwards',
+            },
         },
     },
 

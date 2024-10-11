@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Route untuk homepage
-Route::view('/', 'home');
+Route::get('/', [HomeController::class, 'index']);
 
 // Route untuk home dengan controller
 Route::get('/home', [HomeController::class, 'index']);
