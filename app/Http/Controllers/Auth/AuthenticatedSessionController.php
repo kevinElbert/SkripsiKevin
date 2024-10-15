@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
 
     // Redirect berdasarkan usertype
     if (Auth::user()->usertype == 'admin') {
-        return redirect()->intended('/homeadmin'); // Admin ke /homeadmin
+        return redirect()->intended('/admin/dashboard'); // Admin ke /homeadmin
     }
 
     return redirect()->intended('/home'); // User biasa ke /home

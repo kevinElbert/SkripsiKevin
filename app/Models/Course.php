@@ -9,19 +9,37 @@ class Course extends Model
 {
     use HasFactory;
 
-    // Menentukan kolom mana saja yang bisa diisi secara massal
     protected $fillable = [
         'title',
         'description',
         'image',
         'slug',
-        'category_id', // Relasi dengan kategori
-        'is_published', // Status kursus (published/draft)
+        'category_id',
+        'is_published',
+        'admin_id' // Menambahkan relasi ke admin (pengguna)
     ];
 
-    // Relasi ke model Category (jika Anda ingin menambahkan kategori)
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // Relasi ke model Score
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
+
+    // Metode untuk mendapatkan ukuran file (asumsi kamu menyimpan file path atau ukuran dalam field tertentu)
+    public function getFileSize()
+    {
+        // Misal ukuran file disimpan dalam sebuah field `file_path`, kamu bisa menggunakan storage size function
+        $filePath = storage_path('app/public/courses/' . $this->file_path);
+        
+        if (file_exists($filePath)) {
+            return filesize($filePath); // Mengembalikan ukuran file dalam bytes
+        }
+
+        return 0; // Jika file tidak ditemukan atau tidak ada, kembalikan 0
     }
 }

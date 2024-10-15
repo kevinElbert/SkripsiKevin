@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 // Route untuk homepage
@@ -10,13 +11,18 @@ Route::get('/', [HomeController::class, 'index']);
 // Route untuk home dengan controller
 Route::get('/home', [HomeController::class, 'index']);
 
-// Route untuk homeadmin, hanya bisa diakses oleh admin
-Route::get('/homeadmin', [HomeController::class, 'index'])->middleware('checkUserType');
+// // Route untuk homeadmin, hanya bisa diakses oleh admin
+// Route::get('/homeadmin', [HomeController::class, 'index'])->middleware('checkUserType');
 
-// Route untuk dashboard, hanya bisa diakses oleh user yang terotentikasi dan terverifikasi
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route untuk admin dashboard, hanya bisa diakses oleh admin yang terautentikasi
+Route::middleware(['auth', 'checkUserType'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
+});
+
+// Route untuk dashboard umum, hanya bisa diakses oleh user yang terverifikasi
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Group route untuk profil, memerlukan autentikasi
 Route::middleware('auth')->group(function () {
@@ -27,4 +33,3 @@ Route::middleware('auth')->group(function () {
 
 // Include route auth yang disediakan oleh Laravel Breeze atau Fortify
 require __DIR__.'/auth.php';
-
