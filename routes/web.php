@@ -35,6 +35,7 @@ Route::middleware(['auth', 'checkUserType'])->group(function () {
     Route::delete('/admin/courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
 
+Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
 
 // Include route auth yang disediakan oleh Laravel Breeze atau Fortify
 require __DIR__.'/auth.php';
