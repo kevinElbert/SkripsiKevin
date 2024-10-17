@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            // Menambahkan kolom admin_id dengan foreign key yang terhubung ke tabel users
-            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     // Menambahkan kolom admin_id dengan foreign key yang terhubung ke tabel users
+        //     $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
+        // });
     }
 
     /**
@@ -22,10 +22,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            // Menghapus kolom admin_id saat rollback migration
-            $table->dropForeign(['admin_id']);
-            $table->dropColumn('admin_id');
-        });
+        // Schema::table('courses', function (Blueprint $table) {
+        //     // Menghapus kolom admin_id saat rollback migration
+        //     $table->dropForeign(['admin_id']);
+        //     $table->dropColumn('admin_id');
+        // });
     }
 };
