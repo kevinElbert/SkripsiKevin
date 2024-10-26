@@ -21,15 +21,15 @@
         <input type="text" placeholder="What do you want to learn?" class="w-full max-w-xl border border-gray-300 rounded-md p-2">
         <p class="text-gray-600 my-2">Pilih filter kursus sesuai dengan kebutuhan kondisi Anda!</p>
         <div class="space-x-2 my-4">
-            <button class="bg-blue-500 text-black px-4 py-2 rounded-full">Deaf</button>
-            <button class="bg-blue-500 text-black px-4 py-2 rounded-full">Visually Impaired</button>
-            <button class="bg-blue-500 text-black px-4 py-2 rounded-full">Intellectual</button>
-            <button class="bg-blue-500 text-black px-4 py-2 rounded-full">Others</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Deaf</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Visually Impaired</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Intellectual</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Others</button>
         </div>
     </section>
 
     <!-- Trending Courses Section -->
-    <section class="my-12">
+    {{-- <section class="my-12">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus lagi trend!</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($trendingCourses as $course)
@@ -37,18 +37,37 @@
                     <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                     <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                     <p class="text-gray-600">{{ $course->description }}</p>
-                    <button class="mt-4 bg-blue-600 text-black px-4 py-2 rounded-md">Click me</button>
+                    @if($isLoggedIn)
+                    <a href="{{ route('courses.show', $course->slug) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md block text-center">Click me</a>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md block text-center">Login to access</a>
+                    @endif
                 </div>
             @endforeach
+        </div> --}}
+        {{-- <div class="mt-6">
+            {{ $trendingCourses->links('pagination::tailwind') }}
+        </div> --}}
+            <!-- Show More Button -->
+        {{-- <div class="mt-6 text-center">
+            <button id="show-more" class="bg-gray-300 text-black px-4 py-2 rounded-md">Show More</button>
         </div>
-        <!-- Tambahkan pagination link -->
-        <div class="mt-6">
-            {{ $trendingCourses->links() }}
-        </div>
-    </section> 
+    </section>  --}}
 
-     <!-- Best Courses for Deaf Section -->
-     <section class="my-12">
+    // Modified Trending Courses section in home.blade.php
+    <section class="my-12">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus lagi trend!</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @include('partials.course-card')
+        </div>
+        <!-- Show More Button -->
+        <div class="mt-6 text-center">
+            <button id="show-more" class="bg-gray-300 text-black px-4 py-2 rounded-md">Show More</button>
+        </div>
+    </section>
+
+    <!-- Best Courses for Deaf Section -->
+    <section class="my-12">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus untuk meninkatkan pengetahuan dasar!</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($bestCoursesDeaf as $course)
@@ -56,11 +75,14 @@
                     <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                     <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                     <p class="text-gray-600">{{ $course->description }}</p>
-                    <button class="mt-4 bg-blue-600 text-black px-4 py-2 rounded-md">Click me</button>
+                    @if($isLoggedIn)
+                    <a href="{{ route('courses.show', $course->slug) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md block text-center">Click me</a>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md block text-center">Login to access</a>
+                    @endif
                 </div>
             @endforeach
         </div>
-        <!-- Tambahkan pagination link -->
         <div class="mt-6">
             {{ $bestCoursesDeaf->links() }}
         </div>
@@ -75,14 +97,19 @@
                     <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                     <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                     <p class="text-gray-600">{{ $course->description }}</p>
-                    <button class="mt-4 bg-blue-600 text-black px-4 py-2 rounded-md">Click me</button>
+                    @if($isLoggedIn)
+                    <a href="{{ route('courses.show', $course->slug) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md block text-center">Click me</a>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md block text-center">Login to access</a>
+                    @endif
                 </div>
             @endforeach
         </div>
-        <!-- Tambahkan pagination link -->
         <div class="mt-6">
             {{ $visitedCourses->links() }}
         </div>
     </section> 
 </main>
 @endsection
+
+@vite('resources/js/loadMoreCourses.js')
