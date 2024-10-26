@@ -62,7 +62,8 @@
                         <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                         <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                         <p class="text-gray-600">{{ $course->description }}</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md">Edit ⮟</button>
+                        <!-- Edit button -->
+                <a href="{{ route('courses.edit', $course->id) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md inline-block">Edit ⮟</a>
                     </div>
                 @endforeach               
             </div>

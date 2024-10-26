@@ -29,7 +29,7 @@
     </section>
 
     <!-- Trending Courses Section -->
-    <section class="my-12">
+    {{-- <section class="my-12">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus lagi trend!</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($trendingCourses as $course)
@@ -37,14 +37,34 @@
                     <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                     <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                     <p class="text-gray-600">{{ $course->description }}</p>
+                    @if($isLoggedIn)
                     <a href="{{ route('courses.show', $course->slug) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md block text-center">Click me</a>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md block text-center">Login to access</a>
+                    @endif
                 </div>
             @endforeach
+        </div> --}}
+        {{-- <div class="mt-6">
+            {{ $trendingCourses->links('pagination::tailwind') }}
+        </div> --}}
+            <!-- Show More Button -->
+        {{-- <div class="mt-6 text-center">
+            <button id="show-more" class="bg-gray-300 text-black px-4 py-2 rounded-md">Show More</button>
         </div>
-        <div class="mt-6">
-            {{ $trendingCourses->links() }}
+    </section>  --}}
+
+    // Modified Trending Courses section in home.blade.php
+    <section class="my-12">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus lagi trend!</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @include('partials.course-card')
         </div>
-    </section> 
+        <!-- Show More Button -->
+        <div class="mt-6 text-center">
+            <button id="show-more" class="bg-gray-300 text-black px-4 py-2 rounded-md">Show More</button>
+        </div>
+    </section>
 
     <!-- Best Courses for Deaf Section -->
     <section class="my-12">
@@ -55,7 +75,11 @@
                     <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                     <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                     <p class="text-gray-600">{{ $course->description }}</p>
+                    @if($isLoggedIn)
                     <a href="{{ route('courses.show', $course->slug) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md block text-center">Click me</a>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md block text-center">Login to access</a>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -73,7 +97,11 @@
                     <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                     <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                     <p class="text-gray-600">{{ $course->description }}</p>
+                    @if($isLoggedIn)
                     <a href="{{ route('courses.show', $course->slug) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md block text-center">Click me</a>
+                    @else
+                        <a href="{{ route('login') }}" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-md block text-center">Login to access</a>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -83,3 +111,5 @@
     </section> 
 </main>
 @endsection
+
+@vite('resources/js/loadMoreCourses.js')

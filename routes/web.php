@@ -35,6 +35,8 @@ Route::middleware(['auth', 'checkUserType'])->group(function () {
     Route::delete('/admin/courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
 
+// Route to handle loading more courses via AJAX
+Route::get('/courses/load-more', [CourseController::class, 'loadMore'])->name('courses.loadMore');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
 
 // Include route auth yang disediakan oleh Laravel Breeze atau Fortify
