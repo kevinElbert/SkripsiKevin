@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/loadMoreCourses.js', // Tambahkan ini
+                'resources/js/courseFilter.js',
             ],
             refresh: true,
         }),
