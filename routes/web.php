@@ -24,6 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Route untuk enroll course
+    Route::post('/courses/{slug}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
 });
 
 Route::middleware(['auth', 'checkUserType'])->group(function () {
@@ -35,9 +38,11 @@ Route::middleware(['auth', 'checkUserType'])->group(function () {
     Route::delete('/admin/courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
 
-// Route to handle loading more courses via AJAX
-Route::get('/courses/load-more', [CourseController::class, 'loadMore'])->name('courses.loadMore');
+// Route untuk menampilkan detail course
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
+
+// Route untuk fitur "Show More" (AJAX) pada courses
+Route::get('/courses/load-more', [CourseController::class, 'loadMore'])->name('courses.loadMore');
 
 // Include route auth yang disediakan oleh Laravel Breeze atau Fortify
 require __DIR__.'/auth.php';
