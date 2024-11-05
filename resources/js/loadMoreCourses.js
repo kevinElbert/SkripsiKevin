@@ -7,26 +7,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadMoreDeafBtn = document.getElementById('show-more-deaf');
     const loadMoreDisabilityBtn = document.getElementById('show-more-disability');
 
+    // Debug: Cek apakah tombol terdeteksi
+    console.log('Load more buttons initialized:', loadMoreTrendingBtn, loadMoreDeafBtn, loadMoreDisabilityBtn);
+
     // Event listener untuk tombol "Show More" Trending Courses
     loadMoreTrendingBtn.addEventListener('click', function() {
+        console.log('Trending Show More clicked'); // Debug: Cek saat tombol diklik
         loadMoreCourses(trendingPage, 1, 'trending-courses-container', loadMoreTrendingBtn);
         trendingPage++;
     });
 
     // Event listener untuk tombol "Show More" Best Courses Deaf
     loadMoreDeafBtn.addEventListener('click', function() {
+        console.log('Deaf Show More clicked'); // Debug: Cek saat tombol diklik
         loadMoreCourses(deafPage, 2, 'deaf-courses-container', loadMoreDeafBtn);
         deafPage++;
     });
 
     // Event listener untuk tombol "Show More" Disability Courses
     loadMoreDisabilityBtn.addEventListener('click', function() {
+        console.log('Disability Show More clicked'); // Debug: Cek saat tombol diklik
         loadMoreCourses(disabilityPage, 3, 'disability-courses-container', loadMoreDisabilityBtn);
         disabilityPage++;
     });
 
     // Fungsi untuk memuat lebih banyak kursus
     function loadMoreCourses(page, categoryId, containerId, button) {
+        console.log(`Loading more courses for category ${categoryId} on page ${page}`); // Debug
         button.textContent = 'Loading...';
         
         fetch(`/courses/load-more?page=${page}&category_id=${categoryId}`, {
@@ -36,16 +43,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log('Response data:', data); // Debug: Lihat data dari server
             if (data.html) {
                 document.getElementById(containerId).insertAdjacentHTML('beforeend', data.html);
                 
                 if (!data.hasMorePages) {
                     button.style.display = 'none';
                 }
+            } else {
+                console.log('No HTML data found'); // Debug: Jika tidak ada data HTML
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error:', error); // Debug: Tangani error
             button.textContent = 'Error loading';
         })
         .finally(() => {

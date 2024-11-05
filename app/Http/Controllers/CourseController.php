@@ -325,22 +325,26 @@ class CourseController extends Controller
         $course = Course::where('slug', $slug)->firstOrFail();
         return view('detail-courses', compact('course'));
     }
-
-    // Memuat lebih banyak kursus untuk fitur "Show More" menggunakan AJAX
     public function loadMore(Request $request)
     {
         if ($request->ajax()) {
-            $trendingCourses = Course::where('category_id', 1)->paginate(3, ['*'], 'page', $request->page);
+            // Ambil kategori dan halaman dari request
+            $categoryId = $request->category_id;
+            $courses = Course::where('category_id', $categoryId)->paginate(3, ['*'], 'page', $request->page);
+    
+            // Cek apakah pengguna sudah login
             $isLoggedIn = Auth::check();
-            $hasMorePages = $trendingCourses->hasMorePages();
-            $view = view('course-card', compact('trendingCourses', 'isLoggedIn'))->render();
-            
+    
+            // Render view dengan mengirimkan $isLoggedIn
+            $view = view('course-card', compact('courses', 'isLoggedIn'))->render();
+    
             return response()->json([
                 'html' => $view,
-                'hasMorePages' => $hasMorePages
+                'hasMorePages' => $courses->hasMorePages()
             ]);
         }
     }
+    
 
     // Filter kursus berdasarkan pencarian dan kategori
     public function filterCourses(Request $request)

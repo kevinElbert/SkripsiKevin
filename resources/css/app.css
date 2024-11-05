@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Aktifkan smooth scrolling untuk seluruh halaman */
+html {
+    scroll-behavior: smooth;
+}
