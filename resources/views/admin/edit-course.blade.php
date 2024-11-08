@@ -9,12 +9,33 @@
     <!-- Form untuk edit course -->
     <form action="{{ route('courses.update', $course->id) }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-md shadow-md">
         @csrf
-        @method('PATCH') <!-- Method PATCH untuk update data -->
+        @method('PATCH')
 
         <!-- Input untuk Course Title -->
         <div class="mb-4">
             <label for="title" class="block text-gray-700">Course Title</label>
             <input type="text" name="title" id="title" value="{{ $course->title }}" class="w-full p-2 border border-gray-300 rounded-md" required>
+        </div>
+
+        <!-- Input untuk Short Description -->
+        <div class="mb-4">
+            <label for="short_description" class="block text-gray-700">Short Description</label>
+            <textarea name="short_description" id="short_description" class="w-full p-2 border border-gray-300 rounded-md" rows="3">{{ $course->short_description }}</textarea>
+        </div>
+
+        <!-- Input untuk Learning Points -->
+        <div class="mb-4">
+            <label for="learning_points" class="block text-gray-700">What You Will Learn</label>
+            <div id="learning-points-container">
+                @if($course->learning_points)
+                    @foreach($course->learning_points as $point)
+                        <input type="text" name="learning_points[]" value="{{ $point }}" class="w-full p-2 border border-gray-300 rounded-md mb-2" placeholder="Enter a learning point">
+                    @endforeach
+                @else
+                    <input type="text" name="learning_points[]" class="w-full p-2 border border-gray-300 rounded-md mb-2" placeholder="Enter a learning point">
+                @endif
+            </div>
+            <button type="button" id="add-learning-point" class="mt-2 bg-green-500 text-white px-4 py-1 rounded-md">Add Another Point</button>
         </div>
 
         <!-- Input untuk Course Description -->
@@ -64,4 +85,17 @@
         </div>
     </form>
 </main>
+
+<!-- JavaScript untuk menambahkan input learning points secara dinamis -->
+<script>
+    document.getElementById('add-learning-point').addEventListener('click', function () {
+        const container = document.getElementById('learning-points-container');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'learning_points[]';
+        input.className = 'w-full p-2 border border-gray-300 rounded-md mb-2';
+        input.placeholder = 'Enter a learning point';
+        container.appendChild(input);
+    });
+</script>
 @endsection
