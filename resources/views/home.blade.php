@@ -20,7 +20,7 @@
     <section class="my-12 bg-gray-50 p-6 rounded-lg shadow-sm">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus lagi trend!</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="trending-courses-container">
-            @include('course-card', ['courses' => $trendingCourses])
+            @include('courses.courses-card', ['courses' => $trendingCourses])
         </div>
         <div class="mt-6 text-center">
             <button id="show-more-trending" class="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400">Show More</button>
@@ -31,7 +31,7 @@
     <section class="my-12 bg-gray-50 p-6 rounded-lg shadow-sm">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus untuk meningkatkan pengetahuan dasar!</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="deaf-courses-container">
-            @include('course-card', ['courses' => $bestCoursesDeaf])
+            @include('courses.courses-card', ['courses' => $bestCoursesDeaf])
         </div>
         <div class="mt-6 text-center">
             <button id="show-more-deaf" class="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400">Show More</button>
@@ -42,7 +42,7 @@
     <section class="my-12 bg-gray-50 p-6 rounded-lg shadow-sm">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Kursus untuk disabilitas!</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="disability-courses-container">
-            @include('course-card', ['courses' => $visitedCourses])
+            @include('courses.courses-card', ['courses' => $visitedCourses])
         </div>
         <div class="mt-6 text-center">
             <button id="show-more-disability" class="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400">Show More</button>

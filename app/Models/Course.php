@@ -19,6 +19,8 @@ class Course extends Model
         'admin_id',
         'is_published',
         'slug', // Assuming you're still using slug
+        'short_description',
+        'learning_points',
     ];
     
     public $timestamps = true; // Timestamps sudah benar
@@ -47,5 +49,14 @@ class Course extends Model
     {
         return $this->file_size ?? 'Unknown';
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+    
+    protected $casts = [
+        'learning_points' => 'array',
+    ];
 }
 
