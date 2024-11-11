@@ -79,6 +79,23 @@
             </select>
         </div>
 
+        <!-- Bagian untuk Edit Sub-Topics -->
+        <div id="subTopicsContainer">
+            <h4>Sub-Topics</h4>
+            @foreach($course->subTopics as $index => $subTopic)
+                <div class="sub-topic-group mb-4">
+                    <label for="sub_topics[{{ $index }}][title]">Title:</label>
+                    <input type="text" name="sub_topics[{{ $index }}][title]" value="{{ $subTopic->title }}" class="w-full p-2 border border-gray-300 rounded-md" required>
+        
+                    <label for="sub_topics[{{ $index }}][description]">Description:</label>
+                    <textarea name="sub_topics[{{ $index }}][description]" class="w-full p-2 border border-gray-300 rounded-md">{{ $subTopic->description }}</textarea>
+        
+                    <label for="sub_topics[{{ $index }}][video]">Upload Video:</label>
+                    <input type="file" name="sub_topics[{{ $index }}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+            @endforeach
+        </div>
+
         <!-- Submit Button -->
         <div class="text-right">
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Update Course</button>

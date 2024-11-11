@@ -41,6 +41,7 @@ class AdminSubTopicController extends Controller
 
     public function edit($courseId, $subTopicId)
     {
+        $course = Course::findOrFail($courseId);
         $subTopic = SubTopic::where('course_id', $courseId)->findOrFail($subTopicId);
         return view('admin.sub_topics.edit', compact('subTopic'));
     }
