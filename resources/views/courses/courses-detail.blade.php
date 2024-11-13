@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4">
-    <!-- Sub-Topic List -->
+    <!-- Sub-Topic List (Kiri) -->
     <div class="col-span-1 bg-white p-4 rounded shadow">
         <h2 class="text-xl font-semibold">Course List</h2>
         <ul class="mt-4">
@@ -17,9 +17,10 @@
                 </li>
             @endforeach
         </ul>
+        <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full">Do Quiz</button>
     </div>
 
-    <!-- Video and Navigation -->
+    <!-- Video and Navigation (Tengah) -->
     <div class="col-span-2 bg-white p-4 rounded shadow">
         <h2 class="text-xl font-semibold">{{ $currentSubTopic->title ?? 'Video Title' }}</h2>
         <video class="w-full mt-4" controls>
@@ -36,11 +37,15 @@
                 <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) }}" class="text-blue-500">Next</a>
             @endif
         </div>
+
+        <div class="mt-6">
+            <textarea class="w-full h-24 p-2 border rounded" placeholder="Add Notes..."></textarea>
+        </div>
     </div>
 
-    <!-- Description or Learning Text -->
+    <!-- Description or Learning Text (Kanan) -->
     <div class="col-span-1 bg-white p-4 rounded shadow">
-        <h2 class="text-xl font-semibold">Description</h2>
+        <h2 class="text-xl font-semibold">What is {{ $currentSubTopic->title ?? $course->title }}?</h2>
         <p class="mt-4">
             {{ $currentSubTopic->description ?? $course->description }}
         </p>

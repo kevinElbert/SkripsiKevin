@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -162,19 +163,37 @@ class CourseController extends Controller
     }
 
     public function loadMore(Request $request)
-    {
-        if ($request->ajax()) {
-            $categoryId = $request->category_id;
-            $courses = Course::where('category_id', $categoryId)->paginate(3, ['*'], 'page', $request->page);
-            $isLoggedIn = Auth::check();
-            $view = view('courses.courses-card', compact('courses', 'isLoggedIn'))->render();
-    
-            return response()->json([
-                'html' => $view,
-                'hasMorePages' => $courses->hasMorePages()
-            ]);
+{
+    if ($request->ajax()) {
+        // Mendapatkan nilai page dan category_id
+        $page = $request->input('page', 1);
+        $categoryId = $request->input('category_id');
+
+        // Debugging: Pastikan parameter diterima
+        Log::info("Page: {$page}, Category ID: {$categoryId}");
+
+        // Ambil courses berdasarkan category_id dan paginasi
+        $courses = Course::where('category_id', $categoryId)->paginate(3, ['*'], 'page', $page);
+
+        // Cek apakah courses ditemukan
+        if ($courses->isEmpty()) {
+            Log::error('No query results for model Course.');
+            return response()->json(['html' => '', 'hasMorePages' => false]);
         }
+
+        // Render view
+        $isLoggedIn = Auth::check();
+        $view = view('courses.courses-card', compact('courses', 'isLoggedIn'))->render();
+
+        return response()->json([
+            'html' => $view,
+            'hasMorePages' => $courses->hasMorePages()
+        ]);
     }
+
+    return abort(404);
+}
+
 
     public function filterCourses(Request $request)
     {
