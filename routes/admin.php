@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminSubTopicController;
 use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,13 @@ Route::middleware(['auth', 'checkUserType'])->group(function () {
         Route::patch('/{course}', [CourseController::class, 'update'])->name('update');
         Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
     });
+});
+
+Route::prefix('admin/courses/{courseId}/sub_topics')->middleware('auth', 'isAdmin')->name('admin.sub_topics.')->group(function () {
+    Route::get('/', [AdminSubTopicController::class, 'index'])->name('index');
+    Route::get('/create', [AdminSubTopicController::class, 'create'])->name('create');
+    Route::post('/', [AdminSubTopicController::class, 'store'])->name('store');
+    Route::get('/{subTopicId}/edit', [AdminSubTopicController::class, 'edit'])->name('edit');
+    Route::put('/{subTopicId}', [AdminSubTopicController::class, 'update'])->name('update');
+    Route::delete('/{subTopicId}', [AdminSubTopicController::class, 'destroy'])->name('destroy');
 });

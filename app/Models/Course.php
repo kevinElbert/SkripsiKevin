@@ -58,5 +58,12 @@ class Course extends Model
     protected $casts = [
         'learning_points' => 'array',
     ];
+
+    // In Course.php model
+    public function subTopics()
+    {
+        return $this->hasMany(SubTopic::class);
+    }
+
 }
 

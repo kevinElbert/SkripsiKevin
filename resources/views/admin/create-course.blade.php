@@ -64,6 +64,48 @@
             </select>
         </div>
 
+        <!-- Bagian untuk Input Sub-Topics -->
+        <div id="subTopicsContainer">
+            <h4>Sub-Topics</h4>
+            <div class="sub-topic-group mb-4">
+                <label for="sub_topics[0][title]">Title:</label>
+                <input type="text" name="sub_topics[0][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
+
+                <label for="sub_topics[0][description]">Description:</label>
+                <textarea name="sub_topics[0][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+
+                <label for="sub_topics[0][video]">Upload Video:</label>
+                <input type="file" name="sub_topics[0][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+            </div>
+        </div>
+
+        <button type="button" onclick="addSubTopic()" class="mt-4 bg-green-500 text-white px-4 py-1 rounded-md">Add Another Sub-Topic</button>
+
+        <script>
+            let subTopicCount = 1;
+
+            function addSubTopic() {
+                const container = document.getElementById('subTopicsContainer');
+                const subTopicGroup = document.createElement('div');
+                subTopicGroup.classList.add('sub-topic-group', 'mb-4');
+
+                subTopicGroup.innerHTML = `
+                    <label for="sub_topics[${subTopicCount}][title]">Title:</label>
+                    <input type="text" name="sub_topics[${subTopicCount}][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
+
+                    <label for="sub_topics[${subTopicCount}][description]">Description:</label>
+                    <textarea name="sub_topics[${subTopicCount}][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+
+                    <label for="sub_topics[${subTopicCount}][video]">Upload Video:</label>
+                    <input type="file" name="sub_topics[${subTopicCount}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+                `;
+
+                container.appendChild(subTopicGroup);
+                subTopicCount++;
+            }
+        </script>
+                
+
         <!-- Submit Button -->
         <div class="text-right">
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Create Course</button>

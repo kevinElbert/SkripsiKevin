@@ -3,75 +3,52 @@
 @section('title', $course->title)
 
 @section('content')
-<main class="container mx-auto my-8 px-4">
-    <!-- Specific Course Section -->
-    <section class="flex flex-col md:flex-row gap-4">
-        <!-- Sidebar for Topics -->
-        <aside class="w-full md:w-1/4 bg-white shadow-md rounded-md p-4">
-            <h3 class="text-xl font-bold mb-4">Topic List</h3>
-            <ul>
-                <li class="mb-4">
-                    <img src="{{ asset('placeholder-topic-image.jpg') }}" alt="Topic Image" class="w-full mb-2">
-                    <h4 class="font-bold">Introduction to C</h4>
-                    <p>Pengenalan apa itu C?</p>
+<div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4">
+    <!-- Sub-Topic List (Kiri) -->
+    <div class="col-span-1 bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold">Course List</h2>
+        <ul class="mt-4">
+            @foreach($subTopics as $subTopic)
+                <li>
+                    <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $subTopic->id]) }}"
+                       class="block p-2 rounded {{ request('subTopic') == $subTopic->id ? 'bg-blue-500 text-white' : 'text-gray-800' }}">
+                        {{ $subTopic->title }}
+                    </a>
                 </li>
-                <!-- Tambahkan lebih banyak topic sesuai course -->
-                <li class="mb-4">
-                    <img src="{{ asset('placeholder-topic-image.jpg') }}" alt="Topic Image" class="w-full mb-2">
-                    <h4 class="font-bold">Topic Title 3</h4>
-                    <p>Short Description</p>
-                </li>
-            </ul>
-            <div class="mt-6">
-                <a href="#" class="block bg-blue-600 text-white text-center py-2 rounded-md">Quiz</a>
-            </div>
-        </aside>
+            @endforeach
+        </ul>
+        <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full">Do Quiz</button>
+    </div>
 
-        <!-- Main Course Content -->
-        <div class="w-full md:w-3/4">
-            <!-- Video Section -->
-            <div class="video-wrapper bg-black mb-6">
-                <video width="100%" controls>
-                    <source src="{{ $course->video }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+    <!-- Video and Navigation (Tengah) -->
+    <div class="col-span-2 bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold">{{ $currentSubTopic->title ?? 'Video Title' }}</h2>
+        <video class="w-full mt-4" controls>
+            <source src="{{ $currentSubTopic->video_url ?? $course->video }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
 
-            <!-- Course Description Section -->
-            <div class="course-content bg-white shadow-md rounded-md p-4">
-                <h2 class="text-3xl font-bold">{{ $course->title }}</h2>
-                <p class="mt-4">{{ $course->description }}</p>
-
-                <!-- Content Example -->
-                <div class="mt-6">
-                    <pre>
-#include &lt;stdio.h&gt;
-
-int main() {
-    char karakter;
-    karakter = 'A';
-    printf("Karakter pertama adalah %c", karakter);
-    karakter = 'B';
-    printf("Karakter kedua adalah %c", karakter);
-    karakter = 'C';
-    printf("Karakter ketiga adalah %c", karakter);
-}
-                    </pre>
-                </div>
-
-                <div class="mt-6">
-                    <p>Gambar di atas ialah contoh bahasa pemrograman C dengan sintaks variabel dan nilai. Lorem ipsum dolor sit amet...</p>
-                </div>
-
-                <!-- References Section -->
-                <div class="mt-12">
-                    <h3 class="text-2xl font-bold">References</h3>
-                    <ul class="list-disc ml-6">
-                        <li>Sumber: HI Edukasi</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="flex justify-between mt-4">
+            @if($previousSubTopic)
+                <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}" class="text-blue-500">Previous</a>
+            @endif
+            <a href="#" class="text-blue-500">See Forum</a>
+            @if($nextSubTopic)
+                <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) }}" class="text-blue-500">Next</a>
+            @endif
         </div>
-    </section>
-</main>
+
+        <div class="mt-6">
+            <textarea class="w-full h-24 p-2 border rounded" placeholder="Add Notes..."></textarea>
+        </div>
+    </div>
+
+    <!-- Description or Learning Text (Kanan) -->
+    <div class="col-span-1 bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold">What is {{ $currentSubTopic->title ?? $course->title }}?</h2>
+        <p class="mt-4">
+            {{ $currentSubTopic->description ?? $course->description }}
+        </p>
+    </div>
+</div>
 @endsection
