@@ -56,6 +56,23 @@
         </div>
 
         <div class="flex justify-between mt-4">
+            <!-- Tombol Previous -->
+            <a href="{{ $previousSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) : '#' }}"
+               class="text-blue-500 {{ $previousSubTopic ? '' : 'opacity-50 cursor-not-allowed' }}">
+               Previous
+            </a>
+        
+            <!-- Tombol See Forum -->
+            <a href="{{ route('forum.index') }}" class="text-blue-500">See Forum</a>
+        
+            <!-- Tombol Next -->
+            <a href="{{ $nextSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) : '#' }}"
+               class="text-blue-500 {{ $nextSubTopic ? '' : 'opacity-50 cursor-not-allowed' }}">
+               Next
+            </a>
+        </div>        
+
+        {{-- <div class="flex justify-between mt-4">
             @if($previousSubTopic)
                 <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}" class="text-blue-500">Previous</a>
             @endif
@@ -63,7 +80,7 @@
             @if($nextSubTopic)
                 <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) }}" class="text-blue-500">Next</a>
             @endif
-        </div>
+        </div> --}}
 
         <div class="mt-6">
             <textarea class="w-full h-24 p-2 border rounded" placeholder="Add Notes..."></textarea>
