@@ -1,55 +1,58 @@
 @extends('main')
 
-@section('title', $thread->title)
+@section('title', 'Forum Threads')
 
 @section('content')
 <div class="container mx-auto my-8">
-    <h1 class="text-3xl font-bold mb-6">{{ $thread->title }}</h1>
+    <h1 class="text-2xl font-bold mb-6">{{ $course->title }} Forum</h1>
 
-    <!-- Thread Content -->
-    <div class="bg-white p-6 rounded shadow mb-6">
-        <p class="text-gray-700">{{ $thread->content }}</p>
-        <p class="text-gray-600 text-sm mt-4">
-            By {{ $thread->user->name }} | {{ $thread->created_at->diffForHumans() }}
-        </p>
-    </div>
-
-    <!-- Comments Section -->
-    <h2 class="text-2xl font-bold mb-4">Comments</h2>
-    @if($thread->comments->isEmpty())
-        <p class="text-gray-700">No comments yet. Be the first to comment!</p>
-    @else
-        <ul>
-            @foreach($thread->comments as $comment)
-                <li class="border-b py-4">
-                    <p class="text-gray-700">{{ $comment->content }}</p>
-                    <p class="text-gray-600 text-sm mt-2">
-                        By {{ $comment->user->name }} | {{ $comment->created_at->diffForHumans() }}
-                    </p>
-
-                    @if(Auth::id() == $comment->user_id)
-                        <form action="{{ route('forum.deleteComment', $comment->id) }}" method="POST" class="mt-2">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 text-sm hover:underline">
-                                Delete
-                            </button>
-                        </form>
-                    @endif
-                </li>
-            @endforeach
-        </ul>
+    <!-- Flash Message -->
+    @if(session('success'))
+        <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+            {{ session('success') }}
+        </div>
     @endif
 
-    <!-- Add Comment -->
-    <div class="mt-6">
-        <h3 class="text-xl font-bold mb-4">Add Comment</h3>
-        <form action="{{ route('forum.storeComment', $thread->id) }}" method="POST">
+    <!-- Button untuk membuka modal -->
+    <button data-open-modal class="bg-blue-500 text-white px-4 py-2 rounded-md">Create New Thread</button>
+
+    <!-- Daftar Threads -->
+    <div class="mt-8">
+        @foreach ($threads as $thread)
+            <div class="bg-white p-4 rounded shadow mb-4">
+                <h2 class="text-xl font-semibold">{{ $thread->title }}</h2>
+                <p class="text-gray-700">{{ $thread->content }}</p>
+                <p class="text-sm text-gray-500">By: {{ $thread->user->name }} | {{ $thread->created_at->diffForHumans() }}</p>
+            </div>
+        @endforeach
+
+        <!-- Pagination -->
+        @if($threads->hasPages())
+            <div class="mt-4">
+                {{ $threads->links() }}
+            </div>
+        @endif
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="create-thread-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
+    <div class="bg-white w-1/2 p-6 rounded shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Create New Thread</h2>
+        <form action="{{ route('forum.storeThread') }}" method="POST">
             @csrf
             <div class="mb-4">
-                <textarea name="content" class="w-full p-2 border rounded" rows="4" placeholder="Write your comment here..." required></textarea>
+                <label for="title" class="block text-gray-700">Title</label>
+                <input type="text" id="title" name="title" class="w-full p-2 border border-gray-300 rounded" required>
             </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+            <div class="mb-4">
+                <label for="content" class="block text-gray-700">Content</label>
+                <textarea id="content" name="content" rows="4" class="w-full p-2 border border-gray-300 rounded" required></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button type="button" data-close-modal class="bg-gray-500 text-white px-4 py-2 rounded-md mr-2">Cancel</button>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Create</button>
+            </div>
         </form>
     </div>
 </div>

@@ -64,4 +64,10 @@ class Thread extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    // Eager load comments, user, and course for performance optimization
+    public function scopeWithRelations($query)
+    {
+        return $query->with('comments.user', 'course', 'subTopic');
+    }
 }

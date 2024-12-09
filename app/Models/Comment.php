@@ -45,4 +45,10 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Eager load user and thread for performance optimization
+    public function scopeWithRelations($query)
+    {
+        return $query->with('user', 'thread');
+    }
 }
