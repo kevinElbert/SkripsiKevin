@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Thread;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Auth\Access\AuthorizesRequests;
 
 class CourseController extends Controller
 {
@@ -25,6 +27,16 @@ class CourseController extends Controller
         return view('admin.create-course', compact('categories'));
     }
 
+    private function createForumThread($course)
+    {
+        // Membuat forum thread untuk course yang baru dibuat
+        Thread::create([
+            'course_id' => $course->id,
+            'title' => 'Forum for ' . $course->title, // Judul forum sesuai dengan judul course
+            'content' => 'This is the discussion forum for the course ' . $course->title, // Deskripsi forum bisa sesuai
+            'user_id' => Auth::id(), // Admin yang membuat course, akan menjadi pembuat thread
+        ]);
+    }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -40,20 +52,25 @@ class CourseController extends Controller
             'sub_topics.*.description' => 'nullable|string',
             'sub_topics.*.video' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000'
         ]);
-    
+        
         $validatedData['admin_id'] = Auth::user()->id;
         $validatedData['category_id'] = $request->input('category');
-    
+        
         if ($request->hasFile('video')) {
             $validatedData['video'] = Cloudinary::uploadVideo($request->file('video')->getRealPath())->getSecurePath();
         }
-    
+        
         if ($request->hasFile('image')) {
             $validatedData['image'] = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         }
         
+        // Create the course
         $course = Course::create($validatedData);
-    
+        
+        // Create a Forum thread automatically when course is created
+        $this->createForumThread($course);
+        
+        // Create sub-topics
         if ($request->has('sub_topics')) {
             foreach ($request->sub_topics as $subTopicData) {
                 $subTopicAttributes = [
@@ -70,7 +87,7 @@ class CourseController extends Controller
         }
 
         return redirect()->route('dashboard', $course->id)
-                         ->with('success', 'Course and sub-topics created successfully!');
+                        ->with('success', 'Course and sub-topics created successfully!');
     }
 
     public function edit($id)
