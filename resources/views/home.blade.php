@@ -3,7 +3,7 @@
 @section('Home', 'Home Page')
 
 @section('content')
-@vite(['resources/js/loadMoreCourses.js'])
+@vite('resources/js/loadMoreCourses.js')
 <main class="container mx-auto my-8 px-4">
     <!-- Introduction Section -->
     <section class="flex flex-col md:flex-row items-center justify-between p-6 mb-12">

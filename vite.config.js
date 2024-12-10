@@ -7,8 +7,9 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/loadMoreCourses.js', // Tambahkan ini
-                'resources/js/courseFilter.js',
+                'resources/js/loadMoreCourses.js', 
+                'resources/js/coursesFilter.js',
+                'resources/js/modalHandler.js'
             ],
             refresh: true,
         }),

@@ -7,6 +7,11 @@
     <title>@yield('title')</title>
     <!-- Importing Tailwind CSS -->
     @vite('resources/css/app.css')
+    @if(request()->routeIs('courses.index') || request()->routeIs('courses.show')) 
+        @vite('resources/js/loadMoreCourses.js')
+    @endif
+    @vite('resources/js/coursesFilter.js')
+    @vite('resources/js/modalHandler.js')
     <!-- Importing Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     {{-- @vite('resources/css/app.css') --}}
@@ -24,8 +29,6 @@
     <!-- Including Footer -->
     @include('layouts.footer')
 
-    <!-- Additional Scripts -->
-    <script src="{{ asset('js/modalHandler.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>
