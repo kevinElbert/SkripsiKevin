@@ -12,6 +12,7 @@
     @endif
     @vite('resources/js/coursesFilter.js')
     @vite('resources/js/modalHandler.js')
+    @vite('resources/js/likeHandler.js')
     <!-- Importing Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     {{-- @vite('resources/css/app.css') --}}

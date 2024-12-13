@@ -63,7 +63,7 @@
             </a>
         
             <!-- Tombol See Forum -->
-            <a href="{{ route('forum.index') }}" class="text-blue-500">See Forum</a>
+            <a href="{{ route('forum.index', $course->id) }}" class="text-blue-500">See Forum</a>
         
             <!-- Tombol Next -->
             <a href="{{ $nextSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) : '#' }}"

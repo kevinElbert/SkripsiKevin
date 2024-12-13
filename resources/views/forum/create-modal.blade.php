@@ -1,4 +1,4 @@
-@if ($courses->isNotEmpty())
+@if (isset($courses) && $courses->isNotEmpty())
     <div id="create-thread-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center">
         <div class="bg-white w-1/2 p-6 rounded shadow-md">
             <h2 class="text-xl font-semibold mb-4">Create New Thread</h2>
