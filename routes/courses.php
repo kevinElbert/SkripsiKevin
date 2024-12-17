@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\NoteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\LikeController;
@@ -24,4 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::post('forum/{id}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
     Route::post('like/{type}/{id}', [LikeController::class, 'toggleLike'])->name('like.toggle');
     Route::delete('forum/comment/{id}', [ForumController::class, 'deleteComment'])->name('forum.comment.delete');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
+    Route::get('/notes/create/{courseId}/{subTopicId?}', [NoteController::class, 'create'])->name('notes.create');
+    Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+    Route::get('/notes/{note}', [NoteController::class, 'show'])->name('notes.show');
+    Route::get('/notes/{note}/edit', [NoteController::class, 'edit'])->name('notes.edit');
+    Route::put('/notes/{note}', [NoteController::class, 'update'])->name('notes.update');
+    Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
 });
