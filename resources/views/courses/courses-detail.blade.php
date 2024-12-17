@@ -23,7 +23,6 @@
                 <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}" class="text-blue-500">Previous</a>
             @endif
         
-            <!-- Tombol untuk kembali ke Main Course -->
             <a href="{{ route('courses.show', $course->slug) }}" class="text-blue-500 font-semibold">
                 Back to Main Course
             </a>
@@ -38,7 +37,6 @@
     <div class="col-span-2 bg-white p-4 rounded shadow">
         <h2 class="text-xl font-semibold">{{ $currentSubTopic->title ?? 'Video Title' }}</h2>
         <div class="relative">
-            <!-- Tombol navigasi kiri dan kanan di sekitar video -->
             <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id ?? $currentSubTopic->id]) }}"
                class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full hover:bg-gray-300">
                 &#9664;
@@ -56,35 +54,39 @@
         </div>
 
         <div class="flex justify-between mt-4">
-            <!-- Tombol Previous -->
             <a href="{{ $previousSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) : '#' }}"
                class="text-blue-500 {{ $previousSubTopic ? '' : 'opacity-50 cursor-not-allowed' }}">
                Previous
             </a>
         
-            <!-- Tombol See Forum -->
             <a href="{{ route('forum.index', $course->id) }}" class="text-blue-500">See Forum</a>
         
-            <!-- Tombol Next -->
             <a href="{{ $nextSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) : '#' }}"
                class="text-blue-500 {{ $nextSubTopic ? '' : 'opacity-50 cursor-not-allowed' }}">
                Next
             </a>
-        </div>        
-
-        {{-- <div class="flex justify-between mt-4">
-            @if($previousSubTopic)
-                <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}" class="text-blue-500">Previous</a>
-            @endif
-            <a href="#" class="text-blue-500">See Forum</a>
-            @if($nextSubTopic)
-                <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) }}" class="text-blue-500">Next</a>
-            @endif
-        </div> --}}
-
-        <div class="mt-6">
-            <textarea class="w-full h-24 p-2 border rounded" placeholder="Add Notes..."></textarea>
         </div>
+
+        <!-- Notes Form -->
+        <div class="mt-6">
+            <form action="{{ route('notes.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="course_id" value="{{ $course->id }}">
+                <input type="hidden" name="sub_topic_id" value="{{ $currentSubTopic->id ?? '' }}">
+        
+                <!-- Input untuk Title -->
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 font-medium">Title</label>
+                    <input id="title" name="title" type="text" 
+                           class="w-full p-2 border border-gray-300 rounded" placeholder="Add Title...">
+                </div>
+        
+                <textarea name="content" rows="3" 
+                          class="w-full p-2 border border-gray-300 rounded" placeholder="Add Notes..."></textarea>
+                <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Save Note</button>
+            </form>
+            <a href="{{ route('notes.index') }}" class="text-blue-500 hover:underline mt-2 inline-block">View All Notes</a>
+        </div>        
     </div>
 
     <!-- Description or Learning Text (Kanan) -->
