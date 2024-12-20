@@ -13,10 +13,12 @@ class Quiz extends Model
         'course_id',
         'title',
         'questions',
+        'media',
     ];
 
     protected $casts = [
-        'questions' => 'array', // Cast JSON ke array PHP
+        'questions' => 'array',
+        'media' => 'array',
     ];
 
     public function course()

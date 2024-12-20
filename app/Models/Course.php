@@ -65,5 +65,10 @@ class Course extends Model
         return $this->hasMany(SubTopic::class);
     }
 
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
 }
 

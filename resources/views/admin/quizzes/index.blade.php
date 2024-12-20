@@ -6,12 +6,28 @@
 <div class="container">
     <h1 class="text-2xl font-bold mb-4">Quiz Management</h1>
 
-    <!-- Tombol untuk menambah quiz -->
-    @foreach ($courses as $course)
-        <a href="{{ route('quizzes.create', ['courseId' => $course->id]) }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
-            Create New Quiz for {{ $course->title }}
-        </a>
-    @endforeach
+    <!-- Statistik -->
+    <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="bg-white p-6 shadow-md rounded-md text-center border border-gray-200">
+            <h3 class="text-xl font-bold mb-2">Total Quizzes</h3>
+            <p class="text-2xl">{{ $totalQuizzes }}</p>
+        </div>
+
+        <div class="bg-white p-6 shadow-md rounded-md text-center border border-gray-200">
+            <h3 class="text-xl font-bold mb-2">Total Questions</h3>
+            <p class="text-2xl">{{ $totalQuestions }}</p>
+        </div>
+
+        <div class="bg-white p-6 shadow-md rounded-md text-center border border-gray-200">
+            <h3 class="text-xl font-bold mb-2">Most Active Course</h3>
+            <p class="text-2xl">{{ $mostActiveCourse->title ?? 'N/A' }}</p>
+        </div>
+    </div>
+
+    <!-- Sorting -->
+    <div class="mb-4">
+        <a href="{{ route('quizzes.index', ['sort' => 'title']) }}" class="text-blue-500">Sort by Title</a>
+    </div>
 
     <!-- Daftar Quiz -->
     <table class="table-auto w-full border-collapse border">
@@ -46,5 +62,10 @@
             @endforelse
         </tbody>
     </table>
+
+    <!-- Pagination -->
+    <div class="mt-6">
+        {{ $quizzes->links() }}
+    </div>
 </div>
 @endsection
