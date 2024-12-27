@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Auth\Access\AuthorizesRequests;
+use App\Models\Category;
 
 class CourseController extends Controller
 {
     public function showHome()
     {
-        $trendingCourses = Course::where('category_id', 'trending')->paginate(3);
-        $bestCoursesDeaf = Course::where('category_id', 'deaf')->paginate(3);
-        $visitedCourses = Course::where('visited', true)->paginate(3);
+        $trendingCourses = Course::where('category_id', 1)->paginate(3);
+        $bestCoursesDeaf = Course::where('category_id', 2)->paginate(3);
+        $visitedCourses = Course::where('category_id', 3)->paginate(3);
 
         return view('home', compact('trendingCourses', 'bestCoursesDeaf', 'visitedCourses'));
     }
@@ -180,37 +181,45 @@ class CourseController extends Controller
     }
 
     public function loadMore(Request $request)
-{
-    if ($request->ajax()) {
-        // Mendapatkan nilai page dan category_id
-        $page = $request->input('page', 1);
+    {
         $categoryId = $request->input('category_id');
+        $page = $request->input('page', 1);
 
-        // Debugging: Pastikan parameter diterima
-        Log::info("Page: {$page}, Category ID: {$categoryId}");
+        Log::info('LoadMore Request:', [
+            'category_id' => $categoryId,
+            'page' => $page
+        ]);
 
-        // Ambil courses berdasarkan category_id dan paginasi
-        $courses = Course::where('category_id', $categoryId)->paginate(3, ['*'], 'page', $page);
+        if (!$categoryId || !Category::where('id', $categoryId)->exists()) {
+            Log::error("Invalid category_id received: {$categoryId}");
+            return response()->json(['html' => '', 'hasMorePages' => false], 404);
+        }
 
-        // Cek apakah courses ditemukan
+        $courses = Course::where('category_id', $categoryId)
+            ->paginate(3, ['*'], 'page', $page);
+
+        Log::info('Courses Query Result:', [
+            'total_courses' => $courses->total(),
+            'current_page' => $courses->currentPage(),
+            'per_page' => $courses->perPage(),
+            'has_more_pages' => $courses->hasMorePages()
+        ]);
+
         if ($courses->isEmpty()) {
-            Log::error('No query results for model Course.');
+            Log::info("No courses found for category_id: {$categoryId}, page: {$page}");
             return response()->json(['html' => '', 'hasMorePages' => false]);
         }
 
-        // Render view
         $isLoggedIn = Auth::check();
-        $view = view('courses.courses-card', compact('courses', 'isLoggedIn'))->render();
+        $html = view('courses.courses-card', ['courses' => $courses, 'isLoggedIn' => $isLoggedIn])->render();
 
         return response()->json([
-            'html' => $view,
-            'hasMorePages' => $courses->hasMorePages()
+            'html' => $html,
+            'hasMorePages' => $courses->hasMorePages(),
+            'currentPage' => $courses->currentPage(),
+            'total' => $courses->total()
         ]);
     }
-
-    return abort(404);
-}
-
 
     public function filterCourses(Request $request)
     {

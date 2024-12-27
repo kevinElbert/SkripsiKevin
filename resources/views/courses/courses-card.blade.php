@@ -11,7 +11,7 @@
                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-center flex-1">
                 Learn More
             </a>
-            @if($isLoggedIn)
+            @if(isset($isLoggedIn) && $isLoggedIn)
                 <a href="{{ route('courses.show', $course->slug ?? 'default-slug') }}" 
                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-center flex-1">
                     Enroll
@@ -25,4 +25,3 @@
         </div>
     </div>
 @endforeach
-

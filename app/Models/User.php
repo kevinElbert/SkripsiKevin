@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\QuizResult;
 
 class User extends Authenticatable
 {
@@ -48,5 +50,14 @@ class User extends Authenticatable
     public function feedbacks()
     {
         return $this->hasMany(Feedback::class);
+    }
+
+    // public function quizResults(): HasMany
+    // {
+    //     return $this->hasMany(QuizResult::class);
+    // }
+    public function quizResults()
+    {
+        return $this->hasMany(QuizResult::class);
     }
 }

@@ -17,7 +17,10 @@
                 </li>
             @endforeach
         </ul>
-        <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full">Do Quiz</button>
+        <a href="{{ route('user.quiz.show', $course->id) }}" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full block text-center">
+            Do Quiz
+        </a>        
+        {{-- <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full">Do Quiz</button> --}}
         <div class="flex justify-between mt-4">
             @if($previousSubTopic)
                 <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}" class="text-blue-500">Previous</a>
