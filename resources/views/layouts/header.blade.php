@@ -7,7 +7,7 @@
 
         <!-- Navigation Links -->
         <nav class="flex items-center space-x-4 justify-center">
-            <a href="/mylearning" class="flex items-center text-white hover:text-purple-300">
+            <a href="{{ route('courses.mylearning') }}" class="flex items-center text-white hover:text-purple-300">
                 <i class="fas fa-graduation-cap mr-2"></i> MyLearning
             </a>
             

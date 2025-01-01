@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Thread;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Auth\Access\AuthorizesRequests;
 use App\Models\Category;
+
 
 class CourseController extends Controller
 {
@@ -240,7 +243,164 @@ class CourseController extends Controller
 
     public function info($slug)
     {
+        
         $course = Course::where('slug', $slug)->with(['feedbacks.user'])->firstOrFail();
         return view('courses.courses-information', compact('course'));
+    }
+
+    public function enroll($slug)
+    {
+        try {
+            $course = Course::where('slug', $slug)->firstOrFail();
+            $user = User::with('courses')->find(Auth::id());
+            
+            if ($user->courses->contains($course->id)) {
+                return redirect()->back()
+                    ->with('message', 'You have already enrolled in this course!');
+            }
+            
+            $user->courses()->attach($course->id);
+            
+            return redirect()->route('courses.show', $course->slug)
+                ->with('success', 'You have successfully enrolled in this course!');
+                
+        } catch (\Exception $e) {
+            Log::error('Enrollment error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'An error occurred during enrollment.');
+        }
+    }
+
+    public function myLearning()
+    {
+        $user = User::with('courses')->find(Auth::id());
+        $courses = $user->courses()->paginate(6);
+        
+        return view('courses.my-learning', compact('courses'));
+    }
+
+    // public function updateProgress(Request $request, $slug)
+    // {
+    //     $course = Course::where('slug', $slug)->firstOrFail();
+    //     $user = Auth::user();
+        
+    //     // Menggunakan Query Builder untuk mengecek enrollment
+    //     $enrollment = DB::table('user_courses')
+    //         ->where('user_id', $user->id)
+    //         ->where('course_id', $course->id)
+    //         ->first();
+        
+    //     if (!$enrollment) {
+    //         return redirect()->route('courses.show', $slug)
+    //             ->with('error', 'You are not enrolled in this course.');
+    //     }
+
+    //     // Hitung progress baru
+    //     $progressIncrease = $request->input('progress_increase', 10);
+    //     $newProgress = min($enrollment->progress + $progressIncrease, 100);
+        
+    //     // Update menggunakan Query Builder
+    //     DB::table('user_courses')
+    //         ->where('user_id', $user->id)
+    //         ->where('course_id', $course->id)
+    //         ->update(['progress' => $newProgress]);
+
+    //     return redirect()->route('courses.show', $slug)
+    //         ->with('success', 'Progress updated successfully!');
+    // }
+
+    public function updateProgress(Request $request, $slug)
+    {
+        $course = Course::where('slug', $slug)->firstOrFail();
+        $user = Auth::user();
+        
+        // Dapatkan data enrollment dari tabel pivot
+        $enrollment = $user->courses()->where('course_id', $course->id)->first();
+        
+        if (!$enrollment) {
+            return redirect()->route('courses.show', $slug)
+                ->with('error', 'You are not enrolled in this course.');
+        }
+
+        // Ambil progress saat ini
+        $currentProgress = $enrollment->pivot->progress ?? 0;
+        
+        // Hitung progress baru
+        $progressIncrease = $request->input('progress_increase', 10);
+        $newProgress = min($currentProgress + $progressIncrease, 100);
+        
+        // Update progress dengan syntax yang benar
+        $user->courses()->syncWithoutDetaching([
+            $course->id => ['progress' => $newProgress]
+        ]);
+
+        return redirect()->route('courses.show', $slug)
+            ->with('success', 'Progress updated successfully!');
+    }
+
+    // public function completeSubTopic($courseSlug, $subTopicId)
+    // {
+    //     $course = Course::where('slug', $courseSlug)->firstOrFail();
+    //     $user = Auth::user();
+        
+    //     // Cek enrollment dengan Query Builder
+    //     $enrollment = DB::table('user_courses')
+    //         ->where('user_id', $user->id)
+    //         ->where('course_id', $course->id)
+    //         ->first();
+        
+    //     if (!$enrollment) {
+    //         return redirect()->route('courses.show', $courseSlug)
+    //             ->with('error', 'You are not enrolled in this course.');
+    //     }
+
+    //     // Hitung progress
+    //     $totalSubTopics = DB::table('sub_topics')
+    //         ->where('course_id', $course->id)
+    //         ->count();
+        
+    //     $progressPerSubTopic = 100 / max($totalSubTopics, 1);
+    //     $newProgress = min($enrollment->progress + $progressPerSubTopic, 100);
+        
+    //     // Update progress
+    //     DB::table('user_courses')
+    //         ->where('user_id', $user->id)
+    //         ->where('course_id', $course->id)
+    //         ->update(['progress' => $newProgress]);
+
+    //     return redirect()->route('courses.show', $courseSlug)
+    //         ->with('success', 'Sub-topic completed! Progress updated.');
+    // }
+
+    public function completeSubTopic($courseSlug, $subTopicId)
+    {
+        $course = Course::where('slug', $courseSlug)->firstOrFail();
+        $user = Auth::user();
+        
+        // Dapatkan data enrollment
+        $enrollment = $user->courses()->where('course_id', $course->id)->first();
+        
+        if (!$enrollment) {
+            return redirect()->route('courses.show', $courseSlug)
+                ->with('error', 'You are not enrolled in this course.');
+        }
+
+        // Hitung progress per subtopic
+        $totalSubTopics = $course->subTopics()->count();
+        $progressPerSubTopic = 100 / max($totalSubTopics, 1); // Hindari pembagian dengan 0
+        
+        // Ambil progress saat ini
+        $currentProgress = $enrollment->pivot->progress ?? 0;
+        
+        // Update progress
+        $newProgress = min($currentProgress + $progressPerSubTopic, 100);
+        
+        // Update dengan syntax yang benar
+        $user->courses()->syncWithoutDetaching([
+            $course->id => ['progress' => $newProgress]
+        ]);
+
+        return redirect()->route('courses.show', $courseSlug)
+            ->with('success', 'Sub-topic completed! Progress updated.');
     }
 }

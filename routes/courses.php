@@ -19,6 +19,11 @@ Route::get('/courses/{slug}/info', [CourseController::class, 'info'])->name('cou
 // Route untuk "enroll" kursus (membutuhkan autentikasi)
 Route::middleware('auth')->post('/courses/{slug}/enroll', [CourseController::class, 'enroll'])->name('courses.enroll');
 
+Route::get('/mylearning', [CourseController::class, 'myLearning'])->name('courses.mylearning');
+
+Route::post('/courses/{courseSlug}/complete-sub-topic/{subTopicId}', [CourseController::class, 'completeSubTopic'])
+    ->name('courses.completeSubTopic');
+
 Route::middleware('auth')->group(function () {
     Route::get('forum/{course_id}', [ForumController::class, 'index'])->name('forum.index');
     Route::get('forum/{id}/thread', [ForumController::class, 'show'])->name('forum.show');

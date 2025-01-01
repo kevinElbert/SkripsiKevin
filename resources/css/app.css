@@ -10,8 +10,21 @@ html {
 .modal-hidden {
     display: none !important;
 }
+
 .modal-visible {
     display: flex !important;
     justify-content: center;
     align-items: center;
+}
+
+.progress-container {
+    background-color: #e5e7eb; /* Tailwind: bg-gray-200 */
+    border-radius: 9999px; /* Tailwind: rounded-full */
+    height: 0.5rem; /* Tailwind: h-2 */
+}
+
+.progress-bar {
+    background-color: #3b82f6; /* Tailwind: bg-blue-500 */
+    height: 0.5rem; /* Tailwind: h-2 */
+    border-radius: 9999px; /* Tailwind: rounded-full */
 }

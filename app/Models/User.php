@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\QuizResult;
+use App\Models\Course;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -59,5 +61,15 @@ class User extends Authenticatable
     public function quizResults()
     {
         return $this->hasMany(QuizResult::class);
+    }
+
+    // public function courses()
+    // {
+    //     return $this->belongsToMany(Course::class, 'user_courses', 'user_id', 'course_id')->withTimestamps();
+    // }
+    
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'user_courses')->withPivot('progress')->withTimestamps();
     }
 }

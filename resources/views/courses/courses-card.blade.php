@@ -7,18 +7,31 @@
         
         <!-- Tombol untuk "Learn More" dan "Enroll" -->
         <div class="flex gap-2 mt-4">
-            <a href="{{ route('courses.info', $course->slug ?? 'default-slug') }}" 
+            <a href="{{ route('courses.info', $course->slug ?? 'default-slug') }}" tabindex="0" 
                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-center flex-1">
                 Learn More
             </a>
-            @if(isset($isLoggedIn) && $isLoggedIn)
-                <a href="{{ route('courses.show', $course->slug ?? 'default-slug') }}" 
-                   class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-center flex-1">
+            {{-- @if(isset($isLoggedIn) && $isLoggedIn)
+            <form action="{{ route('courses.enroll', $course->slug) }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-center flex-1">
                     Enroll
-                </a>
+                </button>
+            </form>
             @else
-                <a href="{{ route('login') }}" 
-                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-center flex-1">
+                <a href="{{ route('login') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-center flex-1">
+                    Login to Enroll
+                </a>
+            @endif --}}
+            @if(Auth::check())
+                <form action="{{ route('courses.enroll', $course->slug) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md" aria-label="Enroll to {{ $course->title }}">
+                        Enroll
+                    </button>                    
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="bg-gray-500 text-white px-4 py-2 rounded-md">
                     Login to Enroll
                 </a>
             @endif
