@@ -15,11 +15,8 @@
 
         <label for="video">Upload Video:</label>
         <input type="file" name="video" accept="video/*">
+        <small class="text-gray-600">Current Video: {{ $subTopic->video }}</small>
         <br>
-        @if($subTopic->video_url)
-            <p>Current Video: <a href="{{ $subTopic->video_url }}" target="_blank">View Video</a></p>
-        @endif
-
         <button type="submit">Update Sub-Topic</button>
     </form>
 @endsection
