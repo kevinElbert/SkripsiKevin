@@ -94,6 +94,7 @@
 
                     <label for="sub_topics[{{ $index }}][video]">Upload Video:</label>
                     <input type="file" name="sub_topics[{{ $index }}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+                    <small class="text-gray-600">Current Video: {{ $subTopic->video }}</small>
                 </div>
             @endforeach
         </div>

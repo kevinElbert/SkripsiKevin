@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Thread;
+use App\Models\SubTopic;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,7 @@ class CourseController extends Controller
             'is_published' => 'required|boolean',
             'sub_topics.*.title' => 'required|string|max:255',
             'sub_topics.*.description' => 'nullable|string',
-            'sub_topics.*.video' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000'
+            'sub_topics.*.video' => 'required|mimes:mp4,mov,ogg,qt|max:20000'
         ]);
         
         $validatedData['admin_id'] = Auth::user()->id;
@@ -114,6 +115,7 @@ class CourseController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category' => 'required|integer',
             'is_published' => 'required|boolean',
+            'sub_topics.*.id' => 'nullable|integer', // ID untuk sub-topik yang sudah ada
             'sub_topics.*.title' => 'required|string|max:255',
             'sub_topics.*.description' => 'nullable|string',
             'sub_topics.*.video' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000'
@@ -131,38 +133,47 @@ class CourseController extends Controller
 
         $course->update($validatedData);
 
-        if ($request->has('sub_topics')) {
-            foreach ($request->sub_topics as $index => $subTopicData) {
-                if (isset($subTopicData['id'])) {
-                    $subTopic = $course->subTopics()->find($subTopicData['id']);
+        // Sub-topik: update, tambah, atau hapus
+        $existingSubTopicIds = $course->subTopics->pluck('id')->toArray(); // ID sub-topik yang sudah ada
+        $incomingSubTopicIds = collect($request->sub_topics)->pluck('id')->filter()->toArray(); // ID sub-topik dari form
 
-                    $subTopicAttributes = [
-                        'title' => $subTopicData['title'],
-                        'description' => $subTopicData['description'],
-                    ];
+        // Hapus sub-topik yang tidak ada dalam request
+        $subTopicsToDelete = array_diff($existingSubTopicIds, $incomingSubTopicIds);
+        SubTopic::destroy($subTopicsToDelete);
 
-                    if (isset($subTopicData['video']) && $subTopicData['video'] instanceof \Illuminate\Http\UploadedFile) {
-                        $subTopicAttributes['video'] = Cloudinary::uploadVideo($subTopicData['video']->getRealPath())->getSecurePath();
-                    }
+        // Update atau tambahkan sub-topik
+        foreach ($request->sub_topics as $subTopicData) {
+            if (isset($subTopicData['id'])) {
+                // Update sub-topik yang sudah ada
+                $subTopic = $course->subTopics()->find($subTopicData['id']);
+                $subTopicAttributes = [
+                    'title' => $subTopicData['title'],
+                    'description' => $subTopicData['description']
+                ];
 
-                    $subTopic->update($subTopicAttributes);
-                } else {
-                    $subTopicAttributes = [
-                        'title' => $subTopicData['title'],
-                        'description' => $subTopicData['description'],
-                    ];
-
-                    if (isset($subTopicData['video']) && $subTopicData['video'] instanceof \Illuminate\Http\UploadedFile) {
-                        $subTopicAttributes['video'] = Cloudinary::uploadVideo($subTopicData['video']->getRealPath())->getSecurePath();
-                    }
-
-                    $course->subTopics()->create($subTopicAttributes);
+                if (isset($subTopicData['video']) && $subTopicData['video'] instanceof \Illuminate\Http\UploadedFile) {
+                    $subTopicAttributes['video'] = Cloudinary::uploadVideo($subTopicData['video']->getRealPath())->getSecurePath();
                 }
+
+                $subTopic->update($subTopicAttributes);
+            } else {
+                // Tambah sub-topik baru
+                $subTopicAttributes = [
+                    'title' => $subTopicData['title'],
+                    'description' => $subTopicData['description']
+                ];
+
+                if (isset($subTopicData['video']) && $subTopicData['video'] instanceof \Illuminate\Http\UploadedFile) {
+                    $subTopicAttributes['video'] = Cloudinary::uploadVideo($subTopicData['video']->getRealPath())->getSecurePath();
+                }
+
+                $course->subTopics()->create($subTopicAttributes);
             }
         }
 
         return redirect()->route('dashboard')->with('success', 'Course and sub-topics updated successfully!');
     }
+
 
     public function destroy($id)
     {
