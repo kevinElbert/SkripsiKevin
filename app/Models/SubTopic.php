@@ -13,7 +13,7 @@ class SubTopic extends Model
         'course_id',
         'title',
         'description',
-        'video_url',
+        'video',
     ];
 
     public function course()

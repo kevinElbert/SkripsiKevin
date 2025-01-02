@@ -54,7 +54,7 @@ class CourseController extends Controller
             'is_published' => 'required|boolean',
             'sub_topics.*.title' => 'required|string|max:255',
             'sub_topics.*.description' => 'nullable|string',
-            'sub_topics.*.video' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000'
+            'sub_topics.*.video' => 'required|mimes:mp4,mov,ogg,qt|max:20000'
         ]);
         
         $validatedData['admin_id'] = Auth::user()->id;
