@@ -10,7 +10,8 @@ export default defineConfig({
                 'resources/js/loadMoreCourses.js', 
                 'resources/js/coursesFilter.js',
                 'resources/js/modalHandler.js',
-                'resources/js/likeHandler.js'
+                'resources/js/likeHandler.js',
+                'resources/js/tts.js',
             ],
             refresh: true,
         }),

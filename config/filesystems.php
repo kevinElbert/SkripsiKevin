@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+        'speeches' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/speeches'),
+        ],
+
     ],
 
     /*

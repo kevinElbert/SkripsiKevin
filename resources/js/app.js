@@ -3,6 +3,7 @@ import './likeHandler';
 import './coursesFilter';
 import './loadMoreCourses';
 import './modalHandler';
+import './tts';
 
 import Alpine from 'alpinejs';
 

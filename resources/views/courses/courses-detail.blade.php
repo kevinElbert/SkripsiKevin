@@ -2,6 +2,8 @@
 
 @section('title', $course->title)
 
+@vite('resources/js/tts.js')
+
 @section('content')
 <div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4">
     <!-- Sub-Topic List (Kiri) -->
@@ -46,7 +48,7 @@
             </a>
 
             <video class="w-full mt-4" controls>
-                <source src="{{ $currentSubTopic->video_url ?? $course->video }}" type="video/mp4">
+                <source src="{{ $currentSubTopic->video ?? $course->video }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
 
@@ -95,9 +97,10 @@
     <!-- Description or Learning Text (Kanan) -->
     <div class="col-span-1 bg-white p-4 rounded shadow">
         <h2 class="text-xl font-semibold">What is {{ $currentSubTopic->title ?? $course->title }}?</h2>
-        <p class="mt-4">
+        <p id="description-text" class="mt-4">
             {{ $currentSubTopic->description ?? $course->description }}
         </p>
+        <button id="play-tts" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Play Audio</button>
     </div>
 </div>
 @endsection

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TextToSpeechController;
 
 // Route untuk homepage
 Route::get('/', [HomeController::class, 'index']);
@@ -15,3 +16,4 @@ require __DIR__.'/user.php';
 require __DIR__.'/courses.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/quiz.php';
+require __DIR__.'/tts.php';
