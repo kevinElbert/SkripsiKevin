@@ -13,6 +13,7 @@ class QuizAnswer extends Model
 
     protected $casts = [
         'options' => 'array',
+        'correct_option' => 'array'
     ];
 
     public function quiz()

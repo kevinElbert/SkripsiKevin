@@ -23,6 +23,49 @@ class UserQuizController extends Controller
         return view('user.quiz.show', compact('course', 'quizzes'));
     }
 
+    // public function submitQuiz(Request $request, int $courseId): RedirectResponse
+    // {
+    //     $validated = $request->validate([
+    //         'quiz_id' => 'required|exists:quizzes,id',
+    //         'answers' => 'required|array',
+    //         'answers.*' => 'required|string',
+    //     ]);
+
+    //     $quiz = Quiz::findOrFail($validated['quiz_id']);
+    //     $correctAnswers = collect($quiz->questions)->pluck('correct_answer')->toArray();
+    //     $userAnswers = $validated['answers'];
+
+    //     $score = 0;
+    //     foreach ($userAnswers as $key => $answer) {
+    //         if (isset($correctAnswers[$key]) && $correctAnswers[$key] === $answer) {
+    //             $score++;
+    //         }
+
+    //             // / Simpan jawaban pengguna ke `quiz_answers`
+    //         QuizAnswer::create([
+    //             'user_id' => Auth::id(),
+    //             'quiz_id' => $quiz->id,
+    //             'correct_option' => json_encode($correctAnswers),
+    //             'answer' => $answer,
+    //         ]);
+    //     }
+
+    //     $user = Auth::user();
+    //     if (!$user) {
+    //         return redirect()->route('login');
+    //     }
+        
+    //     QuizResult::create([
+    //         'user_id' => $user->id,
+    //         'quiz_id' => $quiz->id,
+    //         'score' => $score,
+    //         'total_questions' => count($correctAnswers),
+    //     ]);
+    //     return redirect()
+    //         ->route('user.quiz.result', $courseId)
+    //         ->with('success', "You scored $score out of " . count($correctAnswers));
+    // }
+
     public function submitQuiz(Request $request, int $courseId): RedirectResponse
     {
         $validated = $request->validate([
@@ -37,15 +80,18 @@ class UserQuizController extends Controller
 
         $score = 0;
         foreach ($userAnswers as $key => $answer) {
-            if (isset($correctAnswers[$key]) && $correctAnswers[$key] === $answer) {
+            $isCorrect = (isset($correctAnswers[$key]) && $correctAnswers[$key] === $answer);
+            if ($isCorrect) {
                 $score++;
             }
 
-                // / Simpan jawaban pengguna ke `quiz_answers`
+            // Simpan jawaban pengguna ke `quiz_answers`
             QuizAnswer::create([
                 'user_id' => Auth::id(),
                 'quiz_id' => $quiz->id,
-                'correct_option' => $correctAnswers,
+                'question' => $quiz->questions[$key]['question'],
+                'options' => $quiz->questions[$key]['options'],
+                'correct_option' => $correctAnswers[$key],
                 'answer' => $answer,
             ]);
         }
@@ -54,13 +100,14 @@ class UserQuizController extends Controller
         if (!$user) {
             return redirect()->route('login');
         }
-        
+
         QuizResult::create([
             'user_id' => $user->id,
             'quiz_id' => $quiz->id,
             'score' => $score,
             'total_questions' => count($correctAnswers),
         ]);
+
         return redirect()
             ->route('user.quiz.result', $courseId)
             ->with('success', "You scored $score out of " . count($correctAnswers));
