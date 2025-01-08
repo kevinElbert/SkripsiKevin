@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/js/likeHandler.js',
                 'resources/js/tts.js',
                 'resources/js/highContrast.js',
+                'resources/js/voiceControl.js',
             ],
             refresh: true,
         }),
