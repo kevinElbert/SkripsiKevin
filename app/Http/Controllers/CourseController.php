@@ -104,6 +104,7 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::info($request->all());
         $course = Course::findOrFail($id);
 
         $validatedData = $request->validate([
@@ -177,9 +178,44 @@ class CourseController extends Controller
 
     public function destroy($id)
     {
-        Course::findOrFail($id)->delete();
-        return redirect()->route('dashboard')->with('success', 'Course deleted successfully!');
+        $course = Course::findOrFail($id);
+    
+        // Hapus sub-topik terkait
+        $course->subTopics()->each(function ($subTopic) {
+            // Hapus video sub-topik dari Cloudinary
+            if ($subTopic->video_url) {
+                try {
+                    Cloudinary::destroy($subTopic->video_url); // Sesuaikan jika ID Cloudinary berbeda
+                } catch (\Exception $e) {
+                    Log::error('Failed to delete sub-topic video: ' . $e->getMessage());
+                }
+            }
+            $subTopic->delete();
+        });
+    
+        // Hapus video dan gambar course dari Cloudinary
+        if ($course->video) {
+            try {
+                Cloudinary::destroy($course->video);
+            } catch (\Exception $e) {
+                Log::error('Failed to delete course video: ' . $e->getMessage());
+            }
+        }
+    
+        if ($course->image) {
+            try {
+                Cloudinary::destroy($course->image);
+            } catch (\Exception $e) {
+                Log::error('Failed to delete course image: ' . $e->getMessage());
+            }
+        }
+    
+        // Hapus course dari database
+        $course->delete();
+    
+        return redirect()->route('dashboard')->with('success', 'Course and related sub-topics deleted successfully!');
     }
+    
 
     public function show($slug, Request $request)
     {

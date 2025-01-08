@@ -61,18 +61,57 @@
                     <div class="bg-white shadow-md rounded-md p-4 border border-gray-200">
                         <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
                         <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
+                        <p class="text-gray-600 mb-4">{{ $course->description }}</p>
+                    
+                        <!-- Button Section -->
+                        <div class="flex flex-wrap gap-2">
+                            <!-- Edit Course -->
+                            <a href="{{ route('courses.edit', $course->id) }}" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-md">Edit Course</a>
+                    
+                            <!-- Delete Course -->
+                            <form action="{{ route('courses.destroy', $course->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this course?');" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
+                            </form>
+                    
+                            <!-- Create Quiz -->
+                            <a href="{{ route('quizzes.create', $course->id) }}" 
+                            class="bg-green-600 text-white px-4 py-2 rounded-md">Create Quiz</a>
+                    
+                            <!-- Edit Quiz -->
+                            @if ($course->quizzes->count() > 0)
+                                <a href="{{ route('quizzes.edit', $course->quizzes->first()->id) }}" 
+                                class="bg-yellow-600 text-white px-4 py-2 rounded-md">Edit Quiz</a>
+                            @endif
+                        </div>
+                    </div>                
+                @endforeach
+                {{-- @foreach($courses as $course)
+                    <div class="bg-white shadow-md rounded-md p-4 border border-gray-200">
+                        <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
+                        <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
                         <p class="text-gray-600">{{ $course->description }}</p>
 
-                        <!-- Edit button -->
-                        <a href="{{ route('courses.edit', $course->id) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md inline-block">Edit</a>
+                        <!-- Edit Course button -->
+                        <a href="{{ route('courses.edit', $course->id) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md inline-block">Edit Course</a>
                         
                         <!-- Create Quiz button -->
                         <a href="{{ route('quizzes.create', ['courseId' => $course->id]) }}" 
                         class="mt-2 bg-green-600 text-white px-4 py-2 rounded-md inline-block">
                             Create Quiz
                         </a>
+
+                        <!-- Edit Quiz button -->
+                        @foreach ($course->quizzes as $quiz)
+                            <a href="{{ route('quizzes.edit', $quiz->id) }}" 
+                                class="mt-2 bg-yellow-600 text-white px-4 py-2 rounded-md inline-block">
+                                Edit Quiz
+                            </a>
+                        @endforeach
                     </div>
-                @endforeach               
+                @endforeach                --}}
             </div>
             
             <!-- Move Pagination Outside of the Grid -->

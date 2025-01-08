@@ -95,6 +95,12 @@
                     <label for="sub_topics[{{ $index }}][video]">Upload Video:</label>
                     <input type="file" name="sub_topics[{{ $index }}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
                     <small class="text-gray-600">Current Video: {{ $subTopic->video }}</small>
+
+                    <form action="{{ route('admin.sub_topics.destroy', ['courseId' => $course->id, 'subTopicId' => $subTopic->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this sub-topic?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded-md mt-2">Delete Sub-Topic</button>
+                    </form>
                 </div>
             @endforeach
         </div>
@@ -129,7 +135,7 @@
 
         <!-- Submit Button -->
         <div class="text-right">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Update Course</button>
+            <button type="submit" onclick="console.log('Submit button clicked');" class="bg-blue-500 text-white px-4 py-2 rounded-md">Update Course</button>
         </div>
     </form>
 </main>

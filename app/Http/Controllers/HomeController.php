@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Course;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -22,32 +23,23 @@ class HomeController extends Controller
     //     // Kirimkan data kursus dan status login ke view
     //     return view('home', compact('trendingCourses', 'bestCoursesDeaf', 'visitedCourses', 'isLoggedIn'));
     // }
+    
 
     public function index()
     {
         try {
-            // Ambil 3 kursus dari setiap kategori
-            $trendingCourses = Course::where('category_id', 1)->paginate(3);
-            $bestCoursesDeaf = Course::where('category_id', 2)->paginate(3);
-            $visitedCourses = Course::where('category_id', 3)->paginate(3);
+            // Ambil semua kategori beserta kursusnya secara relasi
+            $categories = Category::with('courses')->get();
 
-            // Cek apakah user login
-            $isLoggedIn = Auth::check();
+            // Debug: Log jumlah kategori
+            Log::info('Categories count: ' . $categories->count());
 
-            // Debug: Cek jumlah data yang diambil
-            Log::info('Trending Courses count: ' . $trendingCourses->count());
-            Log::info('Best Courses Deaf count: ' . $bestCoursesDeaf->count());
-            Log::info('Visited Courses count: ' . $visitedCourses->count());
-
-            // Kirimkan data kursus dan status login ke view
-            return view('home', compact('trendingCourses', 'bestCoursesDeaf', 'visitedCourses', 'isLoggedIn'));
+            // Kirimkan data kategori ke view
+            return view('home', compact('categories'));
         } catch (\Exception $e) {
             Log::error('Error in HomeController@index: ' . $e->getMessage());
             return view('home', [
-                'trendingCourses' => collect([]),
-                'bestCoursesDeaf' => collect([]),
-                'visitedCourses' => collect([]),
-                'isLoggedIn' => Auth::check()
+                'categories' => collect([]),
             ]);
         }
     }
