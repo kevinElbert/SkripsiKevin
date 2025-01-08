@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/modalHandler.js',
                 'resources/js/likeHandler.js',
                 'resources/js/tts.js',
+                'resources/js/highContrast.js',
             ],
             refresh: true,
         }),

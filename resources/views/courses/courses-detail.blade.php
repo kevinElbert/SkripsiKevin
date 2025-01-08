@@ -5,9 +5,9 @@
 @vite('resources/js/tts.js')
 
 @section('content')
-<div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4">
+<div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4 category-container">
     <!-- Sub-Topic List (Kiri) -->
-    <div class="col-span-1 bg-white p-4 rounded shadow">
+    <div class="col-span-1 bg-white p-4 rounded shadow category-container">
         <h2 class="text-xl font-semibold">Course List</h2>
         <ul class="mt-4 space-y-2">
             @foreach($subTopics as $subTopic)
@@ -22,7 +22,6 @@
         <a href="{{ route('user.quiz.show', $course->id) }}" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full block text-center">
             Do Quiz
         </a>        
-        {{-- <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full">Do Quiz</button> --}}
         <div class="flex justify-between mt-4">
             @if($previousSubTopic)
                 <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}" class="text-blue-500">Previous</a>
@@ -39,7 +38,7 @@
     </div>
 
     <!-- Video and Navigation (Tengah) -->
-    <div class="col-span-2 bg-white p-4 rounded shadow">
+    <div class="col-span-2 bg-white p-4 rounded shadow category-container">
         <h2 class="text-xl font-semibold">{{ $currentSubTopic->title ?? 'Video Title' }}</h2>
         <div class="relative">
             <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id ?? $currentSubTopic->id]) }}"
@@ -95,7 +94,7 @@
     </div>
 
     <!-- Description or Learning Text (Kanan) -->
-    <div class="col-span-1 bg-white p-4 rounded shadow">
+    <div class="col-span-1 bg-white p-4 rounded shadow category-container">
         <h2 class="text-xl font-semibold">What is {{ $currentSubTopic->title ?? $course->title }}?</h2>
         <p id="description-text" class="mt-4">
             {{ $currentSubTopic->description ?? $course->description }}

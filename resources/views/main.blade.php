@@ -16,12 +16,13 @@
     @vite('resources/js/coursesFilter.js')
     @vite('resources/js/modalHandler.js')
     @vite('resources/js/likeHandler.js')
+    @vite('resources/js/highContrast.js')
 
     <!-- Importing Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col {{ Auth::check() && Auth::user()->high_contrast_mode ? 'high-contrast' : '' }}">
     <!-- Including Header -->
     @include('layouts.header')
 

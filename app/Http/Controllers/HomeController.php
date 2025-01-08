@@ -52,4 +52,15 @@ class HomeController extends Controller
 
         return view('home', compact('trendingCourses', 'bestCoursesDeaf', 'visitedCourses'));
     }
+
+
+    public function updateContrastMode(Request $request)
+    {
+        $user = Auth::user();
+        if ($user) {
+            $user->update(['high_contrast_mode' => $request->input('high_contrast_mode')]);
+        }
+    
+        return response()->json(['message' => 'Contrast mode updated successfully']);
+    }    
 }

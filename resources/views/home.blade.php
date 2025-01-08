@@ -17,8 +17,8 @@
 
     <!-- Dynamic Sections Based on Categories -->
     @foreach($categories as $category)
-        <section class="my-12 bg-gray-50 p-6 rounded-lg shadow-sm">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ $category->name }}</h3>
+        <section class="my-12 bg-gray-50 p-6 rounded-lg shadow-sm category-container">
+            <h3 class="text-2xl font-bold mb-4">{{ $category->name }}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @include('courses.courses-card', ['courses' => $category->courses->take(3)])
             </div>
