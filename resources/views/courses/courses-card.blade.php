@@ -1,6 +1,6 @@
 @if(isset($courses) && $courses->count() > 0)
     @foreach($courses as $course)
-        <div class="bg-white shadow-md rounded-md p-4">
+        <div class="category-container bg-white shadow-md rounded-md p-4">
             <!-- Course Image -->
             <img src="{{ $course->image ?? '/path/to/default/image.jpg' }}" alt="{{ $course->title ?? 'Course Image' }}" class="w-full rounded-t-md">
             

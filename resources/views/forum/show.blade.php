@@ -3,7 +3,7 @@
 @section('title', 'Thread: ' . $thread->title)
 
 @section('content')
-    <div class="container mx-auto my-8">
+    <div class="container mx-auto my-8 category-container">
         <h1 class="text-2xl font-bold mb-6">{{ $thread->title }}</h1>
         <p class="text-gray-700">{{ $thread->content }}</p>
         <p class="text-sm text-gray-500 mb-6">By: {{ $thread->user->name }} | {{ $thread->created_at->diffForHumans() }}</p>

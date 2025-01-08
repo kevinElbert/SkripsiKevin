@@ -28,3 +28,70 @@ html {
     height: 0.5rem; /* Tailwind: h-2 */
     border-radius: 9999px; /* Tailwind: rounded-full */
 }
+.high-contrast {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.high-contrast a {
+    color: #FFD700; /* Gold */
+    text-decoration: underline;
+}
+
+.high-contrast .category-container {
+    background-color: #1a1a1a; /* Warna gelap */
+    color: #ffffff; /* Teks putih */
+    border: 2px solid #ffd700; /* Border emas */
+}
+
+.high-contrast .category-container:hover {
+    background-color: #333333; /* Warna lebih terang */
+}
+
+.high-contrast button {
+    background-color: #FFD700; /* Gold */
+    color: #000000; /* Hitam */
+}
+
+.high-contrast input, .high-contrast textarea {
+    background-color: #000000;
+    color: #FFFFFF;
+    border: 2px solid #FFD700;
+}
+
+.high-contrast .category-container {
+    background-color: #1a1a1a; /* Latar belakang gelap */
+    color: #FFFFFF; /* Teks putih */
+    border: 2px solid #FFD700; /* Border emas */
+}
+
+.high-contrast .category-container h3 {
+    color: #FFD700; /* Warna emas untuk judul kategori */
+}
+
+.high-contrast .category-container p {
+    color: #FFFFFF; /* Warna putih untuk deskripsi */
+}
+
+.high-contrast .category-container:hover {
+    background-color: #333333; /* Latar belakang sedikit lebih terang saat hover */
+}
+
+/* Kotak lembut untuk navigasi */
+nav a {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a.bg-purple-500 {
+    background-color: #6B46C1; /* Tailwind Purple-500 */
+}
+
+nav a:hover {
+    background-color: #4C51BF; /* Tailwind Purple-600 */
+    color: white;
+}
+
+/* Tombol toggle high contrast */
+#toggle-high-contrast {
+    transition: background-color 0.3s ease;
+}

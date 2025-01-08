@@ -9,7 +9,7 @@
     <!-- Daftar Threads -->
     <div class="mt-8">
         @foreach ($threads as $thread)
-            <div class="bg-white p-4 rounded shadow mb-4">
+            <div class="bg-white p-4 rounded shadow mb-4 category-container">
                 <h2 class="text-xl font-semibold">
                     <a href="{{ route('forum.show', $thread->id) }}" class="text-blue-500 hover:underline">
                         {{ $thread->title }}
