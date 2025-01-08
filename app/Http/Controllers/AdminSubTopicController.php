@@ -86,4 +86,23 @@ class AdminSubTopicController extends Controller
         return redirect()->route('admin.sub_topics.index', $courseId)
             ->with('success', 'Sub-Topic updated successfully!');
     }
+
+    public function destroy($courseId, $subTopicId)
+    {
+        $subTopic = SubTopic::where('course_id', $courseId)->findOrFail($subTopicId);
+
+        // Hapus video sub-topic dari Cloudinary
+        if ($subTopic->video_url) {
+            try {
+                Cloudinary::destroy($subTopic->video_url); // Sesuaikan jika ID Cloudinary berbeda
+            } catch (\Exception $e) {
+                Log::error('Failed to delete sub-topic video: ' . $e->getMessage());
+            }
+        }
+
+        // Hapus sub-topic dari database
+        $subTopic->delete();
+
+        return redirect()->back()->with('success', 'Sub-Topic deleted successfully!');
+    }
 }

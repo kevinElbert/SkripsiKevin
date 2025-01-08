@@ -79,53 +79,28 @@
             </select>
         </div>
 
-        <!-- Bagian untuk Edit Sub-Topics -->
-        <div id="subTopicsContainer">
-            <h4 class="text-lg font-semibold mt-8 mb-4">Sub-Topics</h4>
-            
-            <!-- Loop melalui sub-topik yang sudah ada -->
+        <!-- Sub-Topics Section -->
+        <div id="subTopicsContainer" class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Sub-Topics</h3>
             @foreach($course->subTopics as $index => $subTopic)
                 <div class="sub-topic-group mb-4 border p-4 rounded-md">
-                    <label for="sub_topics[{{ $index }}][title]">Title:</label>
-                    <input type="text" name="sub_topics[{{ $index }}][title]" value="{{ $subTopic->title }}" class="w-full p-2 border border-gray-300 rounded-md" required>
+                    <label for="sub_topics[{{ $index }}][title]" class="block text-gray-700">Title:</label>
+                    <input type="text" name="sub_topics[{{ $index }}][title]" value="{{ $subTopic->title }}" class="w-full p-2 border border-gray-300 rounded-md mb-2" required>
 
-                    <label for="sub_topics[{{ $index }}][description]">Description:</label>
-                    <textarea name="sub_topics[{{ $index }}][description]" class="w-full p-2 border border-gray-300 rounded-md">{{ $subTopic->description }}</textarea>
+                    <label for="sub_topics[{{ $index }}][description]" class="block text-gray-700">Description:</label>
+                    <textarea name="sub_topics[{{ $index }}][description]" class="w-full p-2 border border-gray-300 rounded-md mb-2">{{ $subTopic->description }}</textarea>
 
-                    <label for="sub_topics[{{ $index }}][video]">Upload Video:</label>
+                    <label for="sub_topics[{{ $index }}][video]" class="block text-gray-700">Upload Video:</label>
                     <input type="file" name="sub_topics[{{ $index }}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
                     <small class="text-gray-600">Current Video: {{ $subTopic->video }}</small>
+
+                    <!-- Delete Sub-Topic -->
+                    <button type="button" class="bg-red-500 text-white px-4 py-2 rounded-md mt-4" onclick="deleteSubTopic(this)">Delete Sub-Topic</button>
                 </div>
             @endforeach
         </div>
 
-        <!-- Button untuk menambah sub-topik baru -->
-        <button type="button" onclick="addSubTopic()" class="mt-4 bg-green-500 text-white px-4 py-1 rounded-md">Add Another Sub-Topic</button>
-
-        <!-- JavaScript untuk menambahkan sub-topik baru -->
-        <script>
-            let subTopicCount = {{ count($course->subTopics) }};
-
-            function addSubTopic() {
-                const container = document.getElementById('subTopicsContainer');
-                const subTopicGroup = document.createElement('div');
-                subTopicGroup.classList.add('sub-topic-group', 'mb-4', 'border', 'p-4', 'rounded-md');
-
-                subTopicGroup.innerHTML = `
-                    <label for="sub_topics[${subTopicCount}][title]">Title:</label>
-                    <input type="text" name="sub_topics[${subTopicCount}][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
-
-                    <label for="sub_topics[${subTopicCount}][description]">Description:</label>
-                    <textarea name="sub_topics[${subTopicCount}][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
-
-                    <label for="sub_topics[${subTopicCount}][video]">Upload Video:</label>
-                    <input type="file" name="sub_topics[${subTopicCount}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
-                `;
-
-                container.appendChild(subTopicGroup);
-                subTopicCount++;
-            }
-        </script>
+        <button type="button" class="bg-green-500 text-white px-4 py-2 rounded-md mb-4" onclick="addSubTopic()">Add Another Sub-Topic</button>
 
         <!-- Submit Button -->
         <div class="text-right">
@@ -134,17 +109,31 @@
     </form>
 </main>
 
-<!-- JavaScript untuk menambahkan input learning points secara dinamis -->
 <script>
-    document.getElementById('add-learning-point').addEventListener('click', function () {
-        const container = document.getElementById('learning-points-container');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'learning_points[]';
-        input.className = 'w-full p-2 border border-gray-300 rounded-md mb-2';
-        input.placeholder = 'Enter a learning point';
-        container.appendChild(input);
-    });
-</script>
+    function addSubTopic() {
+        const container = document.getElementById('subTopicsContainer');
+        const subTopicCount = container.querySelectorAll('.sub-topic-group').length;
+        const subTopicGroup = document.createElement('div');
+        subTopicGroup.classList.add('sub-topic-group', 'mb-4', 'border', 'p-4', 'rounded-md');
 
+        subTopicGroup.innerHTML = `
+            <label for="sub_topics[${subTopicCount}][title]" class="block text-gray-700">Title:</label>
+            <input type="text" name="sub_topics[${subTopicCount}][title]" class="w-full p-2 border border-gray-300 rounded-md mb-2" required>
+
+            <label for="sub_topics[${subTopicCount}][description]" class="block text-gray-700">Description:</label>
+            <textarea name="sub_topics[${subTopicCount}][description]" class="w-full p-2 border border-gray-300 rounded-md mb-2"></textarea>
+
+            <label for="sub_topics[${subTopicCount}][video]" class="block text-gray-700">Upload Video:</label>
+            <input type="file" name="sub_topics[${subTopicCount}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+
+            <button type="button" class="bg-red-500 text-white px-4 py-2 rounded-md mt-4" onclick="deleteSubTopic(this)">Delete Sub-Topic</button>
+        `;
+
+        container.appendChild(subTopicGroup);
+    }
+
+    function deleteSubTopic(button) {
+        button.closest('.sub-topic-group').remove();
+    }
+</script>
 @endsection

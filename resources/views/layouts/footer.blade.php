@@ -28,24 +28,24 @@
             <div class="flex flex-col items-end mt-2 space-y-2">
                 <div class="flex space-x-4 mr-8">
                     <a href="#" class="text-purple-300 hover:text-white">
-                        <img src="{{ asset('build/assets/instagram.png') }}" alt="Instagram" class="w-5 h-5">
+                        <img src="{{ asset('AssetSkripsi/instagram.png') }}" alt="Instagram" class="w-5 h-5">
                     </a>
                     <a href="#" class="text-purple-300 hover:text-white">
-                        <img src="{{ asset('build/assets/gmail.png') }}" alt="Email" class="w-5 h-5">
+                        <img src="{{ asset('AssetSkripsi/gmail.png') }}" alt="Email" class="w-5 h-5">
                     </a>
                     <a href="#" class="text-purple-300 hover:text-white">
-                        <img src="{{ asset('build/assets/logo.png') }}" alt="WhatsApp" class="w-5 h-5">
+                        <img src="{{ asset('AssetSkripsi/logo.png') }}" alt="WhatsApp" class="w-5 h-5">
                     </a>
                 </div>
                 <div class="flex space-x-4 mr-8">
                     <a href="#" class="text-purple-300 hover:text-white">
-                        <img src="{{ asset('build/assets/twitter.png') }}" alt="Twitter" class="w-5 h-5">
+                        <img src="{{ asset('AssetSkripsi/twitter.png') }}" alt="Twitter" class="w-5 h-5">
                     </a>
                     <a href="#" class="text-purple-300 hover:text-white">
-                        <img src="{{ asset('build/assets/youtube.png') }}" alt="YouTube" class="w-5 h-5">
+                        <img src="{{ asset('AssetSkripsi/youtube.png') }}" alt="YouTube" class="w-5 h-5">
                     </a>
                     <a href="#" class="text-purple-300 hover:text-white">
-                        <img src="{{ asset('build/assets/facebook.png') }}" alt="FaceBook" class="w-5 h-5">
+                        <img src="{{ asset('AssetSkripsi/facebook.png') }}" alt="FaceBook" class="w-5 h-5">
                     </a>
                 </div>
             </div>

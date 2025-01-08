@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TextToSpeechController;
 
 // Route untuk homepage
-Route::get('/', [HomeController::class, 'index']);
+// Route::get('/', [HomeController::class, 'index']);
 
 // Route untuk home dengan controller
-Route::get('/home', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Include route auth yang disediakan oleh Laravel Breeze atau Fortify
 require __DIR__.'/auth.php';
