@@ -31,7 +31,7 @@ class VoiceActionController extends Controller
                 ],
                 str_contains($command, 'buka kuis') => [
                     'action' => 'navigate',
-                    'url' => $courseId ? route('user.quiz.show', ['course_id' => $courseId]) : null,
+                    'url' => $courseId ? route('user.quiz.show', ['courseId' => $courseId]) : null,
                     'message' => $courseId ? 'Membuka halaman kuis' : 'ID kursus tidak ditemukan untuk kuis'
                 ],
                 str_contains($command, 'buka my learning') => [
