@@ -3,7 +3,7 @@
 @section('title', 'Quiz for ' . $course->title)
 
 @section('content')
-<div class="container">
+<div class="container" data-course-id="{{ $course->id }}">
     <h1 class="text-2xl font-bold mb-4">Quizzes for {{ $course->title }}</h1>
 
     @foreach ($quizzes as $quiz)

@@ -26,7 +26,7 @@
     <!-- Including Header -->
     @include('layouts.header')
 
-    <main class="flex-grow">
+    <main class="flex-grow" data-course-id="{{ isset($course) ? $course->id : '' }}">
         <!-- Content Section Yield -->
         @yield('content')
     </main>
