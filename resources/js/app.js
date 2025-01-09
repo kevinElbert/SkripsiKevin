@@ -4,6 +4,7 @@ import './coursesFilter';
 import './loadMoreCourses';
 import './modalHandler';
 import './tts';
+import './voiceControl';
 
 import Alpine from 'alpinejs';
 

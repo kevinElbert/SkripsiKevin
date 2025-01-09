@@ -17,7 +17,7 @@
     @vite('resources/js/modalHandler.js')
     @vite('resources/js/likeHandler.js')
     @vite('resources/js/highContrast.js')
-
+    @vite('resources/js/voiceControl.js')
     <!-- Importing Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -26,7 +26,7 @@
     <!-- Including Header -->
     @include('layouts.header')
 
-    <main class="flex-grow">
+    <main class="flex-grow" data-course-id="{{ isset($course) ? $course->id : '' }}">
         <!-- Content Section Yield -->
         @yield('content')
     </main>

@@ -3,7 +3,7 @@
 @section('title', 'Forum Threads')
 
 @section('content')
-<div class="container mx-auto my-8">
+<div class="container mx-auto my-8" data-course-id="{{ $course->id }}">
     <h1 class="text-2xl font-bold mb-6">Forum Threads</h1>
 
     <!-- Daftar Threads -->

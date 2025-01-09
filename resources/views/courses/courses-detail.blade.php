@@ -5,7 +5,8 @@
 @vite('resources/js/tts.js')
 
 @section('content')
-<div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4 category-container">
+{{-- Tambahkan data-course-id di div container utama --}}
+<div class="container mx-auto my-8 px-4 grid grid-cols-4 gap-4 category-container" data-course-id="{{ $course->id }}">
     <!-- Sub-Topic List (Kiri) -->
     <div class="col-span-1 bg-white p-4 rounded shadow category-container">
         <h2 class="text-xl font-semibold">Course List</h2>
@@ -63,7 +64,8 @@
                Previous
             </a>
         
-            <a href="{{ route('forum.index', $course->id) }}" class="text-blue-500">See Forum</a>
+            {{-- Perbaiki route forum untuk menggunakan parameter yang benar --}}
+            <a href="{{ route('forum.index', ['course_id' => $course->id]) }}" class="text-blue-500">See Forum</a>
         
             <a href="{{ $nextSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) : '#' }}"
                class="text-blue-500 {{ $nextSubTopic ? '' : 'opacity-50 cursor-not-allowed' }}">
@@ -78,7 +80,6 @@
                 <input type="hidden" name="course_id" value="{{ $course->id }}">
                 <input type="hidden" name="sub_topic_id" value="{{ $currentSubTopic->id ?? '' }}">
         
-                <!-- Input untuk Title -->
                 <div class="mb-4">
                     <label for="title" class="block text-gray-700 font-medium">Title</label>
                     <input id="title" name="title" type="text" 
