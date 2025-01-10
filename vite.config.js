@@ -21,7 +21,7 @@ export default defineConfig({
     server: {
         host: 'true', // Allow access from all network interfaces
         hmr: {
-            host: 'https://1l8s70v1-5173.asse.devtunnels.ms',
+            host: 'https://skripsikevin-production.up.railway.app',
             // port: 5173,      // Default Vite port
             //  // Replace with your custom host or IP
         },
