@@ -18,12 +18,4 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
-        host: 'true', // Allow access from all network interfaces
-        hmr: {
-            host: 'https://1l8s70v1-5173.asse.devtunnels.ms',
-            // port: 5173,      // Default Vite port
-            //  // Replace with your custom host or IP
-        },
-    },
 });
