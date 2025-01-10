@@ -40,22 +40,26 @@
 
     <!-- Video and Navigation (Tengah) -->
     <div class="col-span-2 bg-white p-4 rounded shadow category-container">
-        <h2 class="text-xl font-semibold">{{ $currentSubTopic->title ?? 'Video Title' }}</h2>
+        <h2 class="text-xl font-semibold">{{ $currentSubTopic->title ?? $course->title }}</h2>
         <div class="relative">
-            <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id ?? $currentSubTopic->id]) }}"
-               class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                &#9664;
-            </a>
+            @if($previousSubTopic)
+                <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $previousSubTopic->id]) }}"
+                   class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full hover:bg-gray-300">
+                    &#9664;
+                </a>
+            @endif
 
             <video class="w-full mt-4" controls>
                 <source src="{{ $currentSubTopic->video ?? $course->video }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
 
-            <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id ?? $currentSubTopic->id]) }}"
-               class="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                &#9654;
-            </a>
+            @if($nextSubTopic)
+                <a href="{{ route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) }}"
+                   class="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full hover:bg-gray-300">
+                    &#9654;
+                </a>
+            @endif
         </div>
 
         <div class="flex justify-between mt-4">
@@ -64,7 +68,6 @@
                Previous
             </a>
         
-            {{-- Perbaiki route forum untuk menggunakan parameter yang benar --}}
             <a href="{{ route('forum.index', ['course_id' => $course->id]) }}" class="text-blue-500">See Forum</a>
         
             <a href="{{ $nextSubTopic ? route('courses.show', ['slug' => $course->slug, 'subTopic' => $nextSubTopic->id]) : '#' }}"
