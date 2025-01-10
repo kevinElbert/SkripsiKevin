@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminSubTopicController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ForumController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'checkUserType'])->group(function () {

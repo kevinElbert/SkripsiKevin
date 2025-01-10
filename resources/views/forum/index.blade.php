@@ -17,6 +17,15 @@
                 </h2>
                 <p class="text-gray-700">{{ Str::limit($thread->content, 100) }}</p>
                 <p class="text-sm text-gray-500">By: {{ $thread->user->name }} | {{ $thread->created_at->diffForHumans() }}</p>
+
+                <!-- Tombol Delete Thread untuk Admin -->
+                @if (Auth::user()->is_admin || $comment->user_id == Auth::id())
+                    <form action="{{ route('forum.thread.delete', $thread->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this thread?');" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 hover:underline">Delete Thread</button>
+                    </form>
+                @endif
             </div>
         @endforeach
 

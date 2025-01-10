@@ -222,13 +222,21 @@ class CourseController extends Controller
         $course = Course::where('slug', $slug)->with('subTopics')->firstOrFail();
         $subTopics = $course->subTopics;
     
-        $currentSubTopic = $request->has('subTopic') ? $subTopics->where('id', $request->subTopic)->first() : $subTopics->first();
+        // Pilih sub-topik saat ini jika ada parameter 'subTopic', jika tidak ambil pertama
+        $currentSubTopic = $request->has('subTopic') 
+            ? $subTopics->where('id', $request->subTopic)->first() 
+            : null;
     
-        $previousSubTopic = $subTopics->where('id', '<', $currentSubTopic->id)->last();
-        $nextSubTopic = $subTopics->where('id', '>', $currentSubTopic->id)->first();
+        // Jika currentSubTopic tidak ditemukan, fallback ke course utama
+        $currentSubTopic = $currentSubTopic ?? $course;
+    
+        // Cari sub-topik sebelumnya dan berikutnya
+        $previousSubTopic = $subTopics->where('id', '<', optional($currentSubTopic)->id)->last();
+        $nextSubTopic = $subTopics->where('id', '>', optional($currentSubTopic)->id)->first();
     
         return view('courses.courses-detail', compact('course', 'subTopics', 'currentSubTopic', 'previousSubTopic', 'nextSubTopic'));
     }
+    
 
     public function loadMore(Request $request)
     {
@@ -326,36 +334,6 @@ class CourseController extends Controller
         return view('courses.my-learning', compact('courses'));
     }
 
-    // public function updateProgress(Request $request, $slug)
-    // {
-    //     $course = Course::where('slug', $slug)->firstOrFail();
-    //     $user = Auth::user();
-        
-    //     // Menggunakan Query Builder untuk mengecek enrollment
-    //     $enrollment = DB::table('user_courses')
-    //         ->where('user_id', $user->id)
-    //         ->where('course_id', $course->id)
-    //         ->first();
-        
-    //     if (!$enrollment) {
-    //         return redirect()->route('courses.show', $slug)
-    //             ->with('error', 'You are not enrolled in this course.');
-    //     }
-
-    //     // Hitung progress baru
-    //     $progressIncrease = $request->input('progress_increase', 10);
-    //     $newProgress = min($enrollment->progress + $progressIncrease, 100);
-        
-    //     // Update menggunakan Query Builder
-    //     DB::table('user_courses')
-    //         ->where('user_id', $user->id)
-    //         ->where('course_id', $course->id)
-    //         ->update(['progress' => $newProgress]);
-
-    //     return redirect()->route('courses.show', $slug)
-    //         ->with('success', 'Progress updated successfully!');
-    // }
-
     public function updateProgress(Request $request, $slug)
     {
         $course = Course::where('slug', $slug)->firstOrFail();
@@ -384,40 +362,6 @@ class CourseController extends Controller
         return redirect()->route('courses.show', $slug)
             ->with('success', 'Progress updated successfully!');
     }
-
-    // public function completeSubTopic($courseSlug, $subTopicId)
-    // {
-    //     $course = Course::where('slug', $courseSlug)->firstOrFail();
-    //     $user = Auth::user();
-        
-    //     // Cek enrollment dengan Query Builder
-    //     $enrollment = DB::table('user_courses')
-    //         ->where('user_id', $user->id)
-    //         ->where('course_id', $course->id)
-    //         ->first();
-        
-    //     if (!$enrollment) {
-    //         return redirect()->route('courses.show', $courseSlug)
-    //             ->with('error', 'You are not enrolled in this course.');
-    //     }
-
-    //     // Hitung progress
-    //     $totalSubTopics = DB::table('sub_topics')
-    //         ->where('course_id', $course->id)
-    //         ->count();
-        
-    //     $progressPerSubTopic = 100 / max($totalSubTopics, 1);
-    //     $newProgress = min($enrollment->progress + $progressPerSubTopic, 100);
-        
-    //     // Update progress
-    //     DB::table('user_courses')
-    //         ->where('user_id', $user->id)
-    //         ->where('course_id', $course->id)
-    //         ->update(['progress' => $newProgress]);
-
-    //     return redirect()->route('courses.show', $courseSlug)
-    //         ->with('success', 'Sub-topic completed! Progress updated.');
-    // }
 
     public function completeSubTopic($courseSlug, $subTopicId)
     {

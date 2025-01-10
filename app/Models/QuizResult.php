@@ -17,6 +17,11 @@ class QuizResult extends Model
         'total_questions'
     ];
 
+    protected $casts = [
+        'score' => 'integer',
+        'total_questions' => 'integer'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -25,5 +30,15 @@ class QuizResult extends Model
     public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class);
+    }
+
+    public function getPercentageScore(): float
+    {
+        return $this->total_questions > 0 ? ($this->score / $this->total_questions) * 100 : 0;
+    }
+
+    public function hasPassed(): bool
+    {
+        return $this->getPercentageScore() >= $this->quiz->passing_score;
     }
 }

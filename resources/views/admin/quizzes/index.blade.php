@@ -29,20 +29,30 @@
         </div>
     </div>
 
-    <!-- Filter dan Sorting -->
-    <div class="mb-4 flex gap-4">
-        <select name="status" class="border rounded-md px-2 py-1" onchange="this.form.submit()">
+    <div class="flex gap-4 mb-4">
+        <select id="statusFilter" class="border rounded px-3 py-1">
             <option value="">All Status</option>
-            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Published</option>
-            <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+            <option value="published" {{ request('status') === 'published' ? 'selected' : '' }}>Published</option>
+            <option value="draft" {{ request('status') === 'draft' ? 'selected' : '' }}>Draft</option>
         </select>
-
-        <select name="sort" class="border rounded-md px-2 py-1" onchange="this.form.submit()">
-            <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Sort by Title</option>
-            <option value="attempts" {{ request('sort') == 'attempts' ? 'selected' : '' }}>Sort by Attempts</option>
-            <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Sort by Date</option>
+    
+        <select id="sortBy" class="border rounded px-3 py-1">
+            <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Sort by Title</option>
+            <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Sort by Date</option>
         </select>
     </div>
+    
+    @push('scripts')
+    <script>
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            window.location.href = '{{ route('quizzes.index') }}?status=' + this.value + '&sort=' + document.getElementById('sortBy').value;
+        });
+    
+        document.getElementById('sortBy').addEventListener('change', function() {
+            window.location.href = '{{ route('quizzes.index') }}?status=' + document.getElementById('statusFilter').value + '&sort=' + this.value;
+        });
+    </script>
+    @endpush
 
     <!-- Daftar Quiz -->
     <div class="bg-white shadow-md rounded-lg overflow-hidden">

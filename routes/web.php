@@ -8,6 +8,10 @@ use App\Http\Controllers\VoiceActionController;
 // Route untuk homepage
 // Route::get('/', [HomeController::class, 'index']);
 
+Route::get('/', function () {
+    return redirect('/home');
+});
+
 // Route untuk home dengan controller
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 

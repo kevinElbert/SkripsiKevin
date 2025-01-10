@@ -10,7 +10,7 @@
                 <h1 class="text-2xl font-bold">Quiz Details</h1>
                 <div class="flex gap-2">
                     <a href="{{ route('quizzes.edit', $quiz->id) }}" 
-                       class="bg-yellow-500 text-white px-4 py-2 rounded-md">Edit Quiz</a>
+                       class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600">Edit Quiz</a>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                     <h2 class="font-bold text-lg mb-2">Basic Information</h2>
                     <div class="space-y-2">
                         <p><span class="font-semibold">Title:</span> {{ $quiz->title }}</p>
-                        <p><span class="font-semibold">Course:</span> {{ $quiz->course->title }}</p>
+                        <p><span class="font-semibold">Course:</span> {{ $quiz->course->title ?? 'N/A' }}</p>
                         <p><span class="font-semibold">Status:</span> 
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                 {{ $quiz->is_published ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
@@ -50,20 +50,20 @@
                 <div class="grid grid-cols-4 gap-4">
                     <div class="bg-blue-50 p-4 rounded-lg">
                         <h3 class="font-semibold text-sm text-blue-700">Total Attempts</h3>
-                        <p class="text-2xl font-bold text-blue-900">{{ $quiz->results()->count() }}</p>
+                        <p class="text-2xl font-bold text-blue-900">{{ $quiz->results->count() ?? 0 }}</p>
                     </div>
                     
                     <div class="bg-green-50 p-4 rounded-lg">
                         <h3 class="font-semibold text-sm text-green-700">Average Score</h3>
                         <p class="text-2xl font-bold text-green-900">
-                            {{ number_format($quiz->results()->avg('score'), 1) }}%
+                            {{ number_format($quiz->results->avg('score') ?? 0, 1) }}%
                         </p>
                     </div>
                     
                     <div class="bg-yellow-50 p-4 rounded-lg">
                         <h3 class="font-semibold text-sm text-yellow-700">Pass Rate</h3>
                         <p class="text-2xl font-bold text-yellow-900">
-                            {{ number_format($quiz->results()->where('passed', true)->count() / max(1, $quiz->results()->count()) * 100, 1) }}%
+                            {{ number_format(($quiz->results->where('passed', true)->count() / max(1, $quiz->results->count())) * 100, 1) }}%
                         </p>
                     </div>
 
@@ -108,7 +108,7 @@
             </div>
 
             <!-- Recent Attempts -->
-            @if($quiz->results()->count() > 0)
+            @if($quiz->results->count() > 0)
                 <div class="mt-6">
                     <h2 class="font-bold text-lg mb-4">Recent Attempts</h2>
                     <div class="overflow-x-auto">
@@ -122,9 +122,9 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($quiz->results()->with('user')->latest()->take(5)->get() as $result)
+                                @foreach($quiz->results->sortByDesc('created_at')->take(5) as $result)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $result->user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $result->user->name ?? 'N/A' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $result->score }}%</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 

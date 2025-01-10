@@ -31,24 +31,16 @@
                 <button class="mt-4 text-blue-500">⮟</button>
             </div>
 
-            <div class="mb-6 bg-white p-6 shadow-md rounded-md text-center border border-gray-200">
-                <h3 class="text-xl font-bold mb-2">Score Average</h3>
-                <ul class="text-left">
-                    <li>Indonesian: 85.23</li>
-                    <li>Chemistry: 92.30</li>
-                    <li>Mathematics: 78.48</li>
-                </ul>
-                <button class="mt-4 text-blue-500">⮟</button>
+            <div class="mb-6 bg-blue-500 p-6 shadow-md rounded-md text-center border border-blue-600 hover:bg-blue-600 transition duration-200">
+                <a href="{{ route('quizzes.index') }}" class="text-white text-xl font-bold">
+                    Manage Quizzes
+                </a>
             </div>
 
-            <div class="mb-6 bg-white p-6 shadow-md rounded-md text-center border border-gray-200">
-                <h3 class="text-xl font-bold mb-2">Course File Size</h3>
-                <ul class="text-left">
-                    <li>Indonesian: 23gb</li>
-                    <li>Chemistry: 828mb</li>
-                    <li>Mathematics: 48tb</li>
-                </ul>
-                <button class="mt-4 text-blue-500">⮟</button>
+            <div class="mb-6 bg-green-500 p-6 shadow-md rounded-md text-center border border-green-600 hover:bg-green-600 transition duration-200">
+                <a href="{{ route('forum.index', ['course_id' => 1]) }}" class="text-white text-xl font-bold">
+                    Manage Forum
+                </a>
             </div>
         </aside>
 
@@ -85,33 +77,13 @@
                                 <a href="{{ route('quizzes.edit', $course->quizzes->first()->id) }}" 
                                 class="bg-yellow-600 text-white px-4 py-2 rounded-md">Edit Quiz</a>
                             @endif
+
+                                <!-- Tombol Manage Forum -->
+                            <a href="{{ route('forum.index', $course->id) }}" 
+                                class="bg-purple-600 text-white px-4 py-2 rounded-md">Manage Forum</a>
                         </div>
                     </div>                
                 @endforeach
-                {{-- @foreach($courses as $course)
-                    <div class="bg-white shadow-md rounded-md p-4 border border-gray-200">
-                        <img src="{{ $course->image }}" alt="{{ $course->title }}" class="w-full rounded-t-md">
-                        <h4 class="text-xl font-bold my-2">{{ $course->title }}</h4>
-                        <p class="text-gray-600">{{ $course->description }}</p>
-
-                        <!-- Edit Course button -->
-                        <a href="{{ route('courses.edit', $course->id) }}" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md inline-block">Edit Course</a>
-                        
-                        <!-- Create Quiz button -->
-                        <a href="{{ route('quizzes.create', ['courseId' => $course->id]) }}" 
-                        class="mt-2 bg-green-600 text-white px-4 py-2 rounded-md inline-block">
-                            Create Quiz
-                        </a>
-
-                        <!-- Edit Quiz button -->
-                        @foreach ($course->quizzes as $quiz)
-                            <a href="{{ route('quizzes.edit', $quiz->id) }}" 
-                                class="mt-2 bg-yellow-600 text-white px-4 py-2 rounded-md inline-block">
-                                Edit Quiz
-                            </a>
-                        @endforeach
-                    </div>
-                @endforeach                --}}
             </div>
             
             <!-- Move Pagination Outside of the Grid -->
