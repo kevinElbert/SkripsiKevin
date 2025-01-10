@@ -73,20 +73,6 @@ class ForumController extends Controller
     
         return redirect()->route('forum.show', $threadId)->with('success', 'Comment added successfully!');
     }    
-    
-    // public function deleteComment($id)
-    // {
-    //     $comment = Comment::findOrFail($id);
-
-    //     // Check if the authenticated user is the owner of the comment
-    //     if (Auth::user()->is_admin || $comment->user_id == Auth::id()) {
-    //         abort(403, 'Unauthorized action.');
-    //     }
-
-    //     $comment->delete();
-
-    //     return redirect()->back()->with('success', 'Comment deleted successfully!');
-    // }
 
     public function deleteComment($id)
     {

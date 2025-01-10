@@ -19,7 +19,7 @@
                 <p class="text-sm text-gray-500">By: {{ $thread->user->name }} | {{ $thread->created_at->diffForHumans() }}</p>
 
                 <!-- Tombol Delete Thread untuk Admin -->
-                @if (Auth::user()->is_admin || $comment->user_id == Auth::id())
+                @if (Auth::user()->is_admin || $thread->user_id == Auth::id())
                     <form action="{{ route('forum.thread.delete', $thread->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this thread?');" class="inline">
                         @csrf
                         @method('DELETE')

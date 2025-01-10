@@ -31,6 +31,13 @@ class Quiz extends Model
         'attempts_allowed' => 'integer'
     ];
 
+    protected $attributes = [
+        'passing_score' => 60,
+        'time_limit' => 30,
+        'attempts_allowed' => 3,
+        'is_published' => false
+    ];
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
@@ -54,11 +61,14 @@ class Quiz extends Model
         return $this->getUserAttemptCount($userId) < $this->attempts_allowed;
     }
 
-    public function getHighestScore($userId): ?int
+    public function getHighestScore($userId): float
     {
-        return $this->results()
+        $highestResult = $this->results()
             ->where('user_id', $userId)
-            ->max('score');
+            ->orderByDesc('percentage_score')
+            ->first();
+
+        return $highestResult ? $highestResult->percentage_score : 0;
     }
 
     public function hasUserPassed($userId): bool

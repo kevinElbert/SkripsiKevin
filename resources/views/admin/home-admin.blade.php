@@ -37,10 +37,10 @@
                 </a>
             </div>
 
-            <div class="mb-6 bg-green-500 p-6 shadow-md rounded-md text-center border border-green-600 hover:bg-green-600 transition duration-200">
+            {{-- <div class="mb-6 bg-green-500 p-6 shadow-md rounded-md text-center border border-green-600 hover:bg-green-600 transition duration-200">
                 <a href="{{ route('forum.index', ['course_id' => 1]) }}" class="text-white text-xl font-bold">
                     Manage Forum
-                </a>
+                </a> --}}
             </div>
         </aside>
 

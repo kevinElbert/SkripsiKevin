@@ -64,6 +64,13 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-wrap gap-4">
+                    @if($result->passed && $quiz)
+                        <a href="{{ route('user.quiz.review', ['quizId' => $quiz->id, 'resultId' => $result->id]) }}" 
+                        class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+                            Review Answers
+                        </a>
+                    @endif
+
                     @if(!$result->hasPassed() && $result->quiz->canUserTakeQuiz(auth()->id()))
                         <a href="{{ route('user.quiz.show', ['courseId' => $courseId]) }}" 
                            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors">

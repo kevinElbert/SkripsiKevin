@@ -14,12 +14,18 @@ class QuizResult extends Model
         'quiz_id', 
         'user_id', 
         'score', 
-        'total_questions'
+        'total_questions',
+        'time_taken',
+        'percentage_score',
+        'passed'
     ];
 
     protected $casts = [
         'score' => 'integer',
-        'total_questions' => 'integer'
+        'total_questions' => 'integer',
+        'time_taken' => 'integer',
+        'percentage_score' => 'float',
+        'passed' => 'boolean'
     ];
 
     public function user(): BelongsTo

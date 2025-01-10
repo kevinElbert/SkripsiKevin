@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::post('forum/{id}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
     Route::post('like/{type}/{id}', [LikeController::class, 'toggleLike'])->name('like.toggle');
     Route::delete('forum/comment/{id}', [ForumController::class, 'deleteComment'])->name('forum.comment.delete');
+    Route::delete('forum/{id}/thread', [ForumController::class, 'deleteThread'])->name('forum.thread.delete');
 });
 
 Route::middleware(['auth'])->group(function () {
