@@ -73,18 +73,47 @@ class ForumController extends Controller
     
         return redirect()->route('forum.show', $threadId)->with('success', 'Comment added successfully!');
     }    
-    
+
     public function deleteComment($id)
     {
         $comment = Comment::findOrFail($id);
 
-        // Check if the authenticated user is the owner of the comment
-        if ($comment->user_id != Auth::id()) {
-            abort(403, 'Unauthorized action.');
+        // Cek jika user adalah admin atau pemilik komentar
+        if (Auth::user()->is_admin || $comment->user_id == Auth::id()) {
+            $comment->delete();
+            return redirect()->back()->with('success', 'Comment deleted successfully!');
         }
 
-        $comment->delete();
+        return redirect()->back()->with('error', 'Unauthorized action.');
+    }
 
-        return redirect()->back()->with('success', 'Comment deleted successfully!');
+    public function deleteThread($id)
+    {
+        $thread = Thread::findOrFail($id);
+
+        // Check jika admin atau pemilik thread
+        if (Auth::user()->is_admin || $thread->user_id == Auth::id()) {
+            $thread->delete();
+            return redirect()->back()->with('success', 'Thread deleted successfully!');
+        }
+
+        abort(403, 'Unauthorized action.');
+    }
+
+    public function editThread(Request $request, $id)
+    {
+        $thread = Thread::findOrFail($id);
+
+        if (Auth::user()->is_admin || $thread->user_id == Auth::id()) {
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'content' => 'required|string',
+            ]);
+
+            $thread->update($request->only('title', 'content'));
+            return redirect()->route('forum.show', $thread->id)->with('success', 'Thread updated successfully!');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 }

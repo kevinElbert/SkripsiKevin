@@ -8,6 +8,7 @@
     <title>@yield('title')</title>
     <!-- Importing Tailwind CSS -->
     @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
 
     <!-- Additional Scripts Based on Route -->
     @if(request()->routeIs('courses.index') || request()->routeIs('courses.show')) 

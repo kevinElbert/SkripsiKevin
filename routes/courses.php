@@ -24,6 +24,13 @@ Route::get('/mylearning', [CourseController::class, 'myLearning'])->name('course
 Route::post('/courses/{courseSlug}/complete-sub-topic/{subTopicId}', [CourseController::class, 'completeSubTopic'])
     ->name('courses.completeSubTopic');
 
+Route::post('/courses/{courseId}/progress', [CourseController::class, 'updateProgress'])
+    ->name('courses.updateProgress');
+
+Route::get('/courses/{courseId}/download-video', [CourseController::class, 'downloadVideo'])
+    ->name('courses.download-video')
+    ->middleware('auth');
+
 Route::middleware('auth')->group(function () {
     Route::get('forum/{course_id}', [ForumController::class, 'index'])->name('forum.index');
     Route::get('forum/{id}/thread', [ForumController::class, 'show'])->name('forum.show');
@@ -31,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::post('forum/{id}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
     Route::post('like/{type}/{id}', [LikeController::class, 'toggleLike'])->name('like.toggle');
     Route::delete('forum/comment/{id}', [ForumController::class, 'deleteComment'])->name('forum.comment.delete');
+    Route::delete('forum/{id}/thread', [ForumController::class, 'deleteThread'])->name('forum.thread.delete');
 });
 
 Route::middleware(['auth'])->group(function () {

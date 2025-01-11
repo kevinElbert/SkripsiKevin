@@ -11,7 +11,10 @@
             <p class="text-gray-600 my-4">Kami percaya bahwa setiap orang, apapun kondisinya, memiliki hak yang sama untuk belajar dan berkembang. Temukan kursus yang sesuai dengan kebutuhan Anda.</p>
         </div>
         <div class="md:w-1/2 flex justify-end">
-            <img src="{{ asset('build/assets/pelajardisabilitas.jpg') }}" alt="Learning Image" class="w-full md:w-auto rounded-lg shadow-md">
+            <!-- Ubah ukuran gambar di sini -->
+            <img src="{{ asset('HomeUserDisabilityLearn.png') }}" 
+                 alt="Learning Image" 
+                 class="w-72 h-auto rounded-lg shadow-md">
         </div>
     </section>
 
