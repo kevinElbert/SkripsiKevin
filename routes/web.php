@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TextToSpeechController;
 use App\Http\Controllers\VoiceActionController;
@@ -22,6 +23,10 @@ Route::post('/voice-action/process', [VoiceActionController::class, 'processComm
     ->name('voice.process')->middleware('auth');
 Route::get('/voice-action/search-course', [VoiceActionController::class, 'searchCourse'])
     ->name('voice.search-course')->middleware('auth');
+
+Route::post('/voice-action/process', [VoiceActionController::class, 'processCommand'])->middleware('auth');
+Route::get('/api/courses/enrolled', [CourseController::class, 'getEnrolledCourses'])->middleware('auth');
+Route::post('/voice-action/quiz', [VoiceActionController::class, 'handleQuizAction'])->middleware('auth');
 
 // Include route auth yang disediakan oleh Laravel Breeze atau Fortify
 require __DIR__.'/auth.php';

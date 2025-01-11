@@ -76,15 +76,15 @@ class UserQuizController extends Controller
             'answers' => 'required|array',
             'answers.*' => 'required|string',
         ]);
-    
+
         $quiz = Quiz::findOrFail($validated['quiz_id']);
         $user = Auth::user();
-    
+
         // Calculate score
         $score = 0;
         $questions = collect($quiz->questions);
         $answers = collect($validated['answers']);
-    
+
         foreach ($questions as $index => $question) {
             $userAnswer = $answers[$index] ?? null;
             if ($userAnswer) {
@@ -98,11 +98,11 @@ class UserQuizController extends Controller
                 }
             }
         }
-    
+
         // Calculate percentage score
         $totalQuestions = $questions->count();
         $percentageScore = ($score / $totalQuestions) * 100;
-    
+
         // Save result
         $result = QuizResult::create([
             'user_id' => $user->id,
@@ -113,10 +113,31 @@ class UserQuizController extends Controller
             'percentage_score' => $percentageScore,
             'passed' => $percentageScore >= $quiz->passing_score
         ]);
-    
+
         // Clear quiz start time from session
         session()->forget('quiz_start_time');
-    
+
+        // Perbarui progress pengguna untuk kursus ini jika lulus quiz
+        if ($percentageScore >= $quiz->passing_score) {
+            $course = Course::findOrFail($courseId);
+            $enrollment = $user->courses()->where('course_id', $course->id)->first();
+
+            if ($enrollment) {
+                // Hitung total item (main course + sub topics + quiz)
+                $totalItems = $course->subTopics()->count() + 2; // +2 untuk main course dan quiz
+                $progressPerItem = 100 / $totalItems;
+
+                // Ambil progress saat ini
+                $currentProgress = $enrollment->pivot->progress ?? 0;
+
+                // Update progress
+                $newProgress = min($currentProgress + $progressPerItem, 100);
+
+                // Update dengan syntax yang benar
+                $user->courses()->updateExistingPivot($course->id, ['progress' => $newProgress]);
+            }
+        }
+
         return redirect()
             ->route('user.quiz.result', ['courseId' => $courseId])
             ->with('success', "Quiz completed! You scored $score out of $totalQuestions");

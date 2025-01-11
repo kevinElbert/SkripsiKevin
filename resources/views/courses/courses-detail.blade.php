@@ -27,6 +27,13 @@
                     Take Quiz
                 </a>
             </div>
+
+            <div class="px-6 py-4 bg-gray-100 border-t border-gray-200">
+                <a href="{{ route('courses.show', $course->slug) }}" 
+                   class="block w-full text-center bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                    Back to Main Course
+                </a>
+            </div>
         </div>
     </div>
 

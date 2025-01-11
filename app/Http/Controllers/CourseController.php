@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Str;
 use App\Models\Category;
 
 
@@ -334,16 +335,16 @@ class CourseController extends Controller
         return view('courses.my-learning', compact('courses'));
     }
 
-    public function updateProgress(Request $request, $slug)
+    public function updateProgress(Request $request, $courseId)
     {
-        $course = Course::where('slug', $slug)->firstOrFail();
+        $course = Course::findOrFail($courseId);
         $user = Auth::user();
         
         // Dapatkan data enrollment dari tabel pivot
         $enrollment = $user->courses()->where('course_id', $course->id)->first();
         
         if (!$enrollment) {
-            return redirect()->route('courses.show', $slug)
+            return redirect()->route('courses.show', $course->slug)
                 ->with('error', 'You are not enrolled in this course.');
         }
 
@@ -351,15 +352,21 @@ class CourseController extends Controller
         $currentProgress = $enrollment->pivot->progress ?? 0;
         
         // Hitung progress baru
-        $progressIncrease = $request->input('progress_increase', 10);
+        $progressIncrease = $request->input('progress', 0);
         $newProgress = min($currentProgress + $progressIncrease, 100);
+
+        Log::info('Updating progress:', [
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+            'current_progress' => $currentProgress,
+            'progress_increase' => $progressIncrease,
+            'new_progress' => $newProgress,
+        ]);
         
         // Update progress dengan syntax yang benar
-        $user->courses()->syncWithoutDetaching([
-            $course->id => ['progress' => $newProgress]
-        ]);
+        $user->courses()->updateExistingPivot($course->id, ['progress' => $newProgress]);
 
-        return redirect()->route('courses.show', $slug)
+        return redirect()->route('courses.show', $course->slug)
             ->with('success', 'Progress updated successfully!');
     }
 
@@ -375,23 +382,61 @@ class CourseController extends Controller
             return redirect()->route('courses.show', $courseSlug)
                 ->with('error', 'You are not enrolled in this course.');
         }
-
-        // Hitung progress per subtopic
-        $totalSubTopics = $course->subTopics()->count();
-        $progressPerSubTopic = 100 / max($totalSubTopics, 1); // Hindari pembagian dengan 0
+    
+        // Hitung total item (main course + sub topics + quiz)
+        $totalItems = $course->subTopics()->count() + 2; // +2 untuk main course dan quiz
+        $progressPerItem = 100 / $totalItems;
         
         // Ambil progress saat ini
         $currentProgress = $enrollment->pivot->progress ?? 0;
         
         // Update progress
-        $newProgress = min($currentProgress + $progressPerSubTopic, 100);
+        $newProgress = min($currentProgress + $progressPerItem, 100);
         
         // Update dengan syntax yang benar
-        $user->courses()->syncWithoutDetaching([
-            $course->id => ['progress' => $newProgress]
-        ]);
-
+        $user->courses()->updateExistingPivot($course->id, ['progress' => $newProgress]);
+    
         return redirect()->route('courses.show', $courseSlug)
             ->with('success', 'Sub-topic completed! Progress updated.');
+    }
+
+    public function downloadVideo($courseId)
+    {
+        try {
+            $course = Course::findOrFail($courseId);
+            $user = Auth::user();
+
+            // Check if user is enrolled
+            if (!$user->courses->contains($course->id)) {
+                return response()->json(['error' => 'You are not enrolled in this course.'], 403);
+            }
+
+            // Get video URL from Cloudinary
+            $videoUrl = $course->video;
+            if (!$videoUrl) {
+                return response()->json(['error' => 'Video not found.'], 404);
+            }
+
+            // Get the video content from Cloudinary
+            $videoContent = file_get_contents($videoUrl);
+            if (!$videoContent) {
+                return response()->json(['error' => 'Failed to fetch video content.'], 500);
+            }
+
+            // Return video as downloadable file
+            return response($videoContent)
+                ->header('Content-Type', 'video/mp4')
+                ->header('Content-Disposition', 'attachment; filename="' . Str::slug($course->title) . '.mp4"')
+                ->header('Content-Length', strlen($videoContent));
+
+        } catch (\Exception $e) {
+            Log::error('Error downloading video: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to download video: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function getEnrolledCourses()
+    {
+        return auth()->user()->enrolledCourses()->select('id', 'title', 'slug')->get();
     }
 }
