@@ -237,7 +237,6 @@ class CourseController extends Controller
     
         return view('courses.courses-detail', compact('course', 'subTopics', 'currentSubTopic', 'previousSubTopic', 'nextSubTopic'));
     }
-    
 
     public function loadMore(Request $request)
     {

@@ -30,7 +30,6 @@ class NoteController extends Controller
         return view('notes.create', compact('course', 'subTopic'));
     }
 
-    // Menyimpan notes baru
     public function store(Request $request)
     {
         $request->validate([
@@ -58,14 +57,13 @@ class NoteController extends Controller
                 'user_id' => Auth::id(),
                 'course_id' => $request->course_id,
                 'sub_topic_id' => $request->sub_topic_id,
-                'title' => 'Note for ' . $request->course_id, // Optional title
+                'title' => $request->title,
                 'content' => $request->content,
             ]);
         }
 
         return back()->with('success', 'Note saved successfully!');
     }
-
 
     // Menampilkan detail note
     public function show(Note $note)
