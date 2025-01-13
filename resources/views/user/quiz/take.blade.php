@@ -14,6 +14,13 @@
         @endif
     </div>
 
+    <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded mb-4">
+        <p class="text-sm">
+            <i class="fas fa-info-circle mr-2"></i>
+            Jika Anda ingin menggunakan voice-to-action untuk mengisi kuis, Anda dapat mengatakan "Pertanyaan 1 pilih A" atau "Pilih A pertanyaan 1" untuk memilih jawaban pada pertanyaan tertentu.
+        </p>
+    </div>
+
     @if(session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
             <span class="block sm:inline">{{ session('error') }}</span>

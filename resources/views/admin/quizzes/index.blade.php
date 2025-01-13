@@ -25,7 +25,7 @@
 
         <div class="bg-white p-6 shadow-md rounded-md text-center border border-gray-200">
             <h3 class="text-xl font-bold mb-2">Total Attempts</h3>
-            <p class="text-2xl">{{ $totalAttempts ?? 0 }}</p>
+            <p class="text-2xl">{{ $totalAttempts }}</p>
         </div>
     </div>
 
