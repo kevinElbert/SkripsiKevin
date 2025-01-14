@@ -41,7 +41,7 @@
                 <a href="{{ route('forum.index', ['course_id' => 1]) }}" class="text-white text-xl font-bold">
                     Manage Forum
                 </a> --}}
-            </div>
+            {{-- </div> --}}
         </aside>
 
         <!-- Main Section for Courses -->

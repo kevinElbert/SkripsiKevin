@@ -79,7 +79,7 @@ class ForumController extends Controller
         $comment = Comment::findOrFail($id);
 
         // Cek jika user adalah admin atau pemilik komentar
-        if (Auth::user()->is_admin || $comment->user_id == Auth::id()) {
+        if (Auth::user()->usertype === 'admin' || $comment->user_id == Auth::id()) {
             $comment->delete();
             return redirect()->back()->with('success', 'Comment deleted successfully!');
         }
