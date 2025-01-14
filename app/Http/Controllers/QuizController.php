@@ -48,12 +48,17 @@ class QuizController extends Controller
     public function create($courseId)
     {
         $course = Course::find($courseId);
-
+    
         if (!$course) {
             abort(404, "Course not found.");
         }
-
-        return view('admin.quizzes.create', ['courseId' => $courseId, 'courseTitle' => $course->title]);
+    
+        $quiz = new Quiz([
+            'time_limit' => 0,
+            'attempts_allowed' => 0,
+        ]);
+    
+        return view('admin.quizzes.create', ['courseId' => $courseId, 'courseTitle' => $course->title, 'quiz' => $quiz]);
     }
 
     // Simpan quiz baru
@@ -68,6 +73,9 @@ class QuizController extends Controller
             'questions.*.correct_answer' => 'required|string',
             'questions.*.media' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov|max:2048',
             'is_published' => 'nullable|boolean',
+            'passing_score' => 'required|integer|min:0|max:100',
+            'time_limit' => 'nullable|integer|min:1',
+            'attempts_allowed' => 'nullable|integer|min:1',
         ]);
 
         $questions = $request->questions;
@@ -83,7 +91,10 @@ class QuizController extends Controller
             'course_id' => $request->course_id,
             'title' => $request->title,
             'questions' => $questions,
-            'is_published' => $request->has('is_published') ? 1 : 0, // Default ke 0 jika tidak dicentang
+            'is_published' => $request->has('is_published') ? 1 : 0,
+            'passing_score' => $request->passing_score,
+            'time_limit' => $request->time_limit,
+            'attempts_allowed' => $request->attempts_allowed,
         ]);
 
         return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully!');
@@ -106,21 +117,36 @@ class QuizController extends Controller
     // Update quiz
     public function update(Request $request, Quiz $quiz)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'questions' => 'required|array',
             'questions.*.question' => 'required|string',
             'questions.*.options' => 'required|array|min:2',
             'questions.*.correct_answer' => 'required|string',
             'is_published' => 'nullable|boolean',
+            'passing_score' => 'required|integer|min:0|max:100',
+            'time_limit' => 'nullable|integer|min:0',
+            'attempts_allowed' => 'nullable|integer|min:0',
         ]);
-
+    
+        $questions = $validatedData['questions'];
+    
+        foreach ($questions as $key => $question) {
+            if (isset($question['media'])) {
+                $uploadedFileUrl = Cloudinary::upload($question['media']->getRealPath())->getSecurePath();
+                $questions[$key]['media'] = $uploadedFileUrl;
+            }
+        }
+    
         $quiz->update([
-            'title' => $request->title,
-            'questions' => $request->questions,
-            'is_published' => $request->has('is_published') ? 1 : 0, // Default ke 0 jika tidak dicentang
+            'title' => $validatedData['title'],
+            'questions' => $questions,
+            'is_published' => $validatedData['is_published'] ?? false,
+            'passing_score' => $validatedData['passing_score'],
+            'time_limit' => $validatedData['time_limit'] ?? null,
+            'attempts_allowed' => $validatedData['attempts_allowed'] ?? null,
         ]);
-
+    
         return redirect()->route('quizzes.index')->with('success', 'Quiz updated successfully!');
     }
 

@@ -23,13 +23,11 @@
             <input type="number" name="passing_score" value="{{ $quiz->passing_score }}" 
                    min="0" max="100" class="w-full border-gray-300 rounded-md shadow-sm" required>
             
-            <label class="block font-bold mt-2">Time Limit (minutes)</label>
-            <input type="number" name="time_limit" value="{{ $quiz->time_limit }}" 
-                   min="0" class="w-full border-gray-300 rounded-md shadow-sm">
-            
-            <label class="block font-bold mt-2">Attempts Allowed</label>  
-            <input type="number" name="attempts_allowed" value="{{ $quiz->attempts_allowed }}" 
-                   min="0" class="w-full border-gray-300 rounded-md shadow-sm">
+                   <label class="block font-bold mt-2">Time Limit (minutes)</label>
+                   <input type="number" name="time_limit" value="{{ old('time_limit', $quiz->time_limit) }}" min="0" class="w-full border-gray-300 rounded-md shadow-sm">
+                   
+                   <label class="block font-bold mt-2">Attempts Allowed</label>  
+                   <input type="number" name="attempts_allowed" value="{{ old('attempts_allowed', $quiz->attempts_allowed) }}" min="0" class="w-full border-gray-300 rounded-md shadow-sm">
 
             <div class="mt-2">
                 <label class="inline-flex items-center">
