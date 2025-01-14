@@ -25,7 +25,10 @@
         <div class="mb-4">
             <label for="learning_points" class="block text-gray-700">What You Will Learn</label>
             <div id="learning-points-container">
-                <input type="text" name="learning_points[]" class="w-full p-2 border border-gray-300 rounded-md mb-2" placeholder="Enter a learning point">
+                <div class="learning-point-item flex items-center mb-2">
+                    <input type="text" name="learning_points[]" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter a learning point">
+                    <button type="button" class="ml-2 bg-red-500 text-white px-4 py-1 rounded-md remove-learning-point">Delete</button>
+                </div>
             </div>
             <button type="button" id="add-learning-point" class="mt-2 bg-green-500 text-white px-4 py-1 rounded-md">Add Another Point</button>
         </div>
@@ -67,44 +70,22 @@
         <!-- Bagian untuk Input Sub-Topics -->
         <div id="subTopicsContainer">
             <h4>Sub-Topics</h4>
-            <div class="sub-topic-group mb-4">
-                <label for="sub_topics[0][title]">Title:</label>
-                <input type="text" name="sub_topics[0][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
+            <div class="sub-topic-group mb-4 flex items-start">
+                <div class="w-full">
+                    <label for="sub_topics[0][title]">Title:</label>
+                    <input type="text" name="sub_topics[0][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
 
-                <label for="sub_topics[0][description]">Description:</label>
-                <textarea name="sub_topics[0][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+                    <label for="sub_topics[0][description]">Description:</label>
+                    <textarea name="sub_topics[0][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
 
-                <label for="sub_topics[0][video]">Upload Video:</label>
-                <input type="file" name="sub_topics[0][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+                    <label for="sub_topics[0][video]">Upload Video:</label>
+                    <input type="file" name="sub_topics[0][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+                <button type="button" class="ml-4 bg-red-500 text-white px-4 py-1 rounded-md remove-sub-topic">Delete</button>
             </div>
         </div>
 
         <button type="button" onclick="addSubTopic()" class="mt-4 bg-green-500 text-white px-4 py-1 rounded-md">Add Another Sub-Topic</button>
-
-        <script>
-            let subTopicCount = 1;
-
-            function addSubTopic() {
-                const container = document.getElementById('subTopicsContainer');
-                const subTopicGroup = document.createElement('div');
-                subTopicGroup.classList.add('sub-topic-group', 'mb-4');
-
-                subTopicGroup.innerHTML = `
-                    <label for="sub_topics[${subTopicCount}][title]">Title:</label>
-                    <input type="text" name="sub_topics[${subTopicCount}][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
-
-                    <label for="sub_topics[${subTopicCount}][description]">Description:</label>
-                    <textarea name="sub_topics[${subTopicCount}][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
-
-                    <label for="sub_topics[${subTopicCount}][video]">Upload Video:</label>
-                    <input type="file" name="sub_topics[${subTopicCount}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
-                `;
-
-                container.appendChild(subTopicGroup);
-                subTopicCount++;
-            }
-        </script>
-                
 
         <!-- Submit Button -->
         <div class="text-right">
@@ -113,16 +94,57 @@
     </form>
 </main>
 
-<!-- JavaScript untuk menambahkan input learning points secara dinamis -->
 <script>
+    let subTopicCount = 1;
+
+    // Tambah Sub-Topic
+    function addSubTopic() {
+        const container = document.getElementById('subTopicsContainer');
+        const subTopicGroup = document.createElement('div');
+        subTopicGroup.classList.add('sub-topic-group', 'mb-4', 'flex', 'items-start');
+
+        subTopicGroup.innerHTML = `
+            <div class="w-full">
+                <label for="sub_topics[${subTopicCount}][title]">Title:</label>
+                <input type="text" name="sub_topics[${subTopicCount}][title]" class="w-full p-2 border border-gray-300 rounded-md" required>
+
+                <label for="sub_topics[${subTopicCount}][description]">Description:</label>
+                <textarea name="sub_topics[${subTopicCount}][description]" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+
+                <label for="sub_topics[${subTopicCount}][video]">Upload Video:</label>
+                <input type="file" name="sub_topics[${subTopicCount}][video]" accept="video/*" class="w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <button type="button" class="ml-4 bg-red-500 text-white px-4 py-1 rounded-md remove-sub-topic">Delete</button>
+        `;
+
+        container.appendChild(subTopicGroup);
+        subTopicCount++;
+    }
+
+    // Hapus Learning Point
+    document.getElementById('learning-points-container').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-learning-point')) {
+            e.target.parentElement.remove();
+        }
+    });
+
+    // Hapus Sub-Topic
+    document.getElementById('subTopicsContainer').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-sub-topic')) {
+            e.target.parentElement.remove();
+        }
+    });
+
+    // Tambah Learning Point
     document.getElementById('add-learning-point').addEventListener('click', function () {
         const container = document.getElementById('learning-points-container');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'learning_points[]';
-        input.className = 'w-full p-2 border border-gray-300 rounded-md mb-2';
-        input.placeholder = 'Enter a learning point';
-        container.appendChild(input);
+        const learningPoint = document.createElement('div');
+        learningPoint.classList.add('learning-point-item', 'flex', 'items-center', 'mb-2');
+        learningPoint.innerHTML = `
+            <input type="text" name="learning_points[]" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter a learning point">
+            <button type="button" class="ml-2 bg-red-500 text-white px-4 py-1 rounded-md remove-learning-point">Delete</button>
+        `;
+        container.appendChild(learningPoint);
     });
 </script>
 @endsection
