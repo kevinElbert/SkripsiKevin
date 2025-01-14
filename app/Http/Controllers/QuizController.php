@@ -31,9 +31,18 @@ class QuizController extends Controller
         $totalQuizzes = Quiz::count();
         $totalQuestions = Quiz::sum(DB::raw('JSON_LENGTH(questions)'));
         $mostActiveCourse = Course::withCount('quizzes')->orderBy('quizzes_count', 'desc')->first();
-        $totalAttempts = \App\Models\QuizResult::count();
+        $totalAttempts = Quiz::withCount('results')
+            ->when($status !== null, function ($query) use ($status) {
+                if ($status === 'published') {
+                    $query->where('is_published', 1);
+                } elseif ($status === 'draft') {
+                    $query->where('is_published', 0);
+                }
+            })
+            ->get()
+            ->sum('results_count');
 
-        return view('admin.quizzes.index', compact('quizzes', 'totalQuizzes', 'totalQuestions', 'mostActiveCourse'));
+        return view('admin.quizzes.index', compact('quizzes', 'totalQuizzes', 'totalQuestions', 'mostActiveCourse', 'totalAttempts'));
     }
 
     public function create($courseId)
