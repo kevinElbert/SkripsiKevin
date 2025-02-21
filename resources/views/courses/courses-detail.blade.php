@@ -154,10 +154,14 @@
     <!-- Description (Kanan) -->
     <div class="col-span-1 bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-800">About This Course</h2>
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <span>About This Course</span>
+            </h2>
         </div>
-        <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">What is {{ $currentSubTopic->title ?? $course->title }}?</h3>
+        <div class="p-6 about-course-content">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">
+                What is {{ $currentSubTopic->title ?? $course->title }}?
+            </h3>
             <p id="description-text" class="text-gray-600 leading-relaxed">
                 {{ $currentSubTopic->description ?? $course->description }}
             </p>

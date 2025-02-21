@@ -360,3 +360,78 @@ document.addEventListener('DOMContentLoaded', function () {
 
     VoiceController.init();
 });
+
+// Voice to Action - Read About This Course
+document.addEventListener('DOMContentLoaded', function() {
+    const readAboutBtn = document.getElementById('readAboutBtn');
+    const readStatus = document.getElementById('readStatus');
+    
+    if (readAboutBtn && 'speechSynthesis' in window) {
+        // Inisialisasi text-to-speech
+        let speaking = false;
+        let speechSynth = window.speechSynthesis;
+        
+        // Handler untuk tombol read about
+        readAboutBtn.addEventListener('click', function() {
+            if (speaking) {
+                // Jika sedang membaca, hentikan
+                speechSynth.cancel();
+                speaking = false;
+                readAboutBtn.innerHTML = '<i class="fas fa-volume-up mr-1"></i> Baca dengan Suara';
+                readStatus.textContent = 'Pembacaan dihentikan';
+                setTimeout(() => { readStatus.textContent = ''; }, 2000);
+                return;
+            }
+            
+            // Ambil konten About This Course
+            const aboutContent = document.querySelector('.about-course-content').textContent.trim();
+            
+            // Buat objek SpeechSynthesisUtterance
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = aboutContent;
+            speech.lang = 'id-ID'; // Sesuaikan dengan bahasa konten
+            speech.volume = 1;
+            speech.rate = 0.9;
+            speech.pitch = 1;
+            
+            // Tampilkan status
+            readStatus.textContent = 'Membaca...';
+            readAboutBtn.innerHTML = '<i class="fas fa-stop mr-1"></i> Hentikan Pembacaan';
+            speaking = true;
+            
+            // Mulai membaca
+            speechSynth.speak(speech);
+            
+            // Event ketika pembacaan selesai
+            speech.onend = function() {
+                readStatus.textContent = 'Selesai membaca';
+                readAboutBtn.innerHTML = '<i class="fas fa-volume-up mr-1"></i> Baca dengan Suara';
+                speaking = false;
+                
+                // Hilangkan status setelah beberapa detik
+                setTimeout(() => {
+                    readStatus.textContent = '';
+                }, 3000);
+            };
+            
+            // Event ketika terjadi error
+            speech.onerror = function() {
+                readStatus.textContent = 'Terjadi kesalahan saat membaca';
+                readAboutBtn.innerHTML = '<i class="fas fa-volume-up mr-1"></i> Baca dengan Suara';
+                speaking = false;
+            };
+        });
+    } else if (readAboutBtn) {
+        // Browser tidak mendukung text-to-speech
+        readAboutBtn.disabled = true;
+        readAboutBtn.title = 'Browser Anda tidak mendukung fitur text-to-speech';
+        readStatus.textContent = 'Browser Anda tidak mendukung fitur text-to-speech';
+    }
+    
+    // Bersihkan text-to-speech saat navigasi halaman
+    window.addEventListener('beforeunload', function() {
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+    });
+});
