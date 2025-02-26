@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\SubTopic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class NoteController extends Controller
 {
@@ -24,19 +25,28 @@ class NoteController extends Controller
     // Menampilkan form untuk membuat notes baru
     public function create($courseId, $subTopicId = null)
     {
+        try{
         $course = Course::findOrFail($courseId);
         $subTopic = $subTopicId ? SubTopic::findOrFail($subTopicId) : null;
 
         return view('notes.create', compact('course', 'subTopic'));
+    } catch (\Exception $e) {
+        // Log error
+        Log::error('Note creation error: ' . $e->getMessage());
+        
+        // Return dengan error
+        return back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
     }
 
     public function store(Request $request)
     {
+        try{
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'sub_topic_id' => 'nullable|exists:sub_topics,id',
+            'sub_topic_id' => 'nullable|sometimes|exists:sub_topics,id',
         ]);
 
         // Check if a note already exists for this course and sub_topic
@@ -63,6 +73,13 @@ class NoteController extends Controller
         }
 
         return back()->with('success', 'Note saved successfully!');
+    } catch (\Exception $e) {
+            // Log error
+            Log::error('Note store error: ' . $e->getMessage());
+            
+            // Return dengan error
+            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+            }
     }
 
     // Menampilkan detail note

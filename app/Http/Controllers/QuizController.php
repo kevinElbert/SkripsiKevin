@@ -7,6 +7,7 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Log;
 
 class QuizController extends Controller
 {
@@ -64,6 +65,7 @@ class QuizController extends Controller
     // Simpan quiz baru
     public function store(Request $request)
     {
+        try {
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
@@ -98,6 +100,13 @@ class QuizController extends Controller
         ]);
 
         return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully!');
+        } catch (\Exception $e) {
+            // Log error
+            Log::error('Quiz creation error: ' . $e->getMessage());
+            
+            // Return dengan error
+            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
     }
 
     // Tampilkan detail quiz
